@@ -2,5 +2,8 @@ Elia please merge this file here:
 "individual_code/decade/potentiometer/potentiometer.ino"
 REJECTED: read the README file, INAPPROPIATE VARIABLE NAMES
 
-
 merge "individual_code\billboard\read_tag\read_tag.ino"
+
+Elia please merge this file here:
+individual_code/LED/LED_control/LED_control.ino
+individual_code/decade/potentiometer/potentiometer.ino
