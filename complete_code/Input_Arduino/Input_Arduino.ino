@@ -15,17 +15,15 @@ it will reproduce the whole animation untill resets itself.
 SoftwareSerial serial_arduino(INPUT_ARDUINO_RX_PIN, INPUT_ARDUINO_TX_PIN);  // RX, TX pins for communication
 
 
-int decade[2] = { 0, 0 };        //first value is the new, second is the old
-int region[2] = { 0, 0 };        //first value is the new, second is the old
-int protest[2] = { 0, 0 };       //first value is the new, second is the old
+int selected_decade[2] = { 0, 0 };        //first value is the new, second is the old
+int selected_region[2] = { 0, 0 };        //first value is the new, second is the old
+int selected_protest[2] = { 0, 0 };       //first value is the new, second is the old //mapping{0:none, 1:,2;,3:}
 bool is_response_start = false;  //this value is used to tell the response arduino whether to start or not
-
-
 
 
 void setup() {
   Serial.begin(9600);          //start the Serial communication
-  serial_arduino.begin(9600);  // Start SoftwareSerial communication
+  serial_arduino.begin(9600);  //start SoftwareSerial communication
 }
 
 void loop() {
