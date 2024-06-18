@@ -20,7 +20,7 @@ example of the billboard rfid user input:<br>
 #define BILLBOARD_RFID_RST_PIN 9<br>
 //SDA and RST are 2 different wires of the RFID reader<br>
 <br>
-**SCHEMATIC**
+**SCHEMATIC**<br>
 please add a schematic of your circuit in the file that you ask to merge so that I can create a complete one<br>
 <br>
 **Enjoy! :-)**
