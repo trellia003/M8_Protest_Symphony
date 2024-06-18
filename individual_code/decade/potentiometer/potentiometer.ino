@@ -1,3 +1,5 @@
+#define DECADE_POTENTIOMETER_PIN A0
+
 const int numReadings = 10;
 int readings[numReadings]; // Array to store the readings
 int readIndex = 0; // The index of the current reading
@@ -13,7 +15,7 @@ void setup() {
 
 void loop() {
   total = total - readings[readIndex]; // Remove the oldest entry
-  readings[readIndex] = analogRead(A0); // Read from the sensor
+  readings[readIndex] = analogRead(DECADE_POTENTIOMETER_PIN); // Read from the sensor
   total = total + readings[readIndex]; // Add the newest reading to the total
   readIndex = (readIndex + 1) % numReadings; // Advance to the next position
   average = total / numReadings; // Calculate the average
