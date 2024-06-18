@@ -5,6 +5,7 @@ int readings[numReadings]; // Array to store the readings
 int readIndex = 0; // The index of the current reading
 int total = 0; // The running total
 int average = 0; // The average
+int decade = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -23,15 +24,18 @@ void loop() {
   
   //Conditions to return decade
   if (120 <= average && average <= 280) {
-    Serial.println(2010);
+    decade = 2010;
+    Serial.println(decade);
   } else if (360 <= average && average <= 560) {
-    Serial.println(2000);
+    decade = 2000;
+    Serial.println(decade);
   } else if (660 <= average && average <= 820) {
-    Serial.println(1990);
+    decade = 1990;
+    Serial.println(decade);
   } else {
-    Serial.println("00");
+    decade = 9999;
+    Serial.println(decade);
   }
-  
   
   //Serial.println(average); // Send it to the computer
   delay(1); // Delay in between reads for stability
