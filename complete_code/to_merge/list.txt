@@ -7,3 +7,4 @@ merge "individual_code\billboard\read_tag\read_tag.ino"
 Elia please merge this file here:
 individual_code/LED/LED_control/LED_control.ino
 individual_code/decade/potentiometer/potentiometer.ino
+individual_code/LDR_hand_selection/hand_ldr_arduino_code_V2/hand_ldr_arduino_code_V2.ino
