@@ -15,28 +15,34 @@ void setup() {
 }
 
 void loop() {
+  updatePotentioReadings();
+  //Conditions to return decade
+  getDecade(average);
+  //Serial.println(average); // Send it to the computer
+  delay(1); // Delay in between reads for stability
+}
+
+void updatePotentioReadings() {
   total = total - readings[readIndex]; // Remove the oldest entry
   readings[readIndex] = analogRead(DECADE_POTENTIOMETER_PIN); // Read from the sensor
   total = total + readings[readIndex]; // Add the newest reading to the total
   readIndex = (readIndex + 1) % numReadings; // Advance to the next position
   average = total / numReadings; // Calculate the average
+}
 
-  
-  //Conditions to return decade
+int getDecade(int average) {
   if (120 <= average && average <= 280) {
-    decade = 2010;
-    Serial.println(decade);
+    decade = 3; //2010
+    Serial.println("3: 2010");
   } else if (360 <= average && average <= 560) {
-    decade = 2000;
-    Serial.println(decade);
+    decade = 2; //2000
+    Serial.println("2: 2000");
   } else if (660 <= average && average <= 820) {
-    decade = 1990;
-    Serial.println(decade);
+    decade = 1; //1990
+    Serial.println("1: 1990");
   } else {
-    decade = 9999;
-    Serial.println(decade);
+    decade = 0;
+    Serial.println("Nothing");
   }
-  
-  //Serial.println(average); // Send it to the computer
-  delay(1); // Delay in between reads for stability
+  return decade;
 }

@@ -57,7 +57,7 @@ void loop() {
   delay(DELAY_TIME);
 
   //Arrest
-  setSectionColor(disperse_end, arrest_end, strip.Color(184, 53, 255)); // Purple
+  setSectionColor(disperse_end, arrest_end, strip.Color(255, 139, 0)); // Orange
   strip.show();
   delay(DELAY_TIME);
 
