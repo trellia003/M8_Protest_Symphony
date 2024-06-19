@@ -58,4 +58,5 @@ void loop() {
 
   // Print the protest code to the Serial monitor
   Serial.println(billboard_protest_code);
+  delay(500); //needs some delay? but it prints 0 and value,0 value, 0 value etc...
 }
