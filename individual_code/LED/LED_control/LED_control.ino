@@ -6,11 +6,12 @@
 #define NUM_LEDS 240
 
 // Define delay between responses
-#define DELAY_TIME 5000
+#define DELAY_TIME 5000 // might be changed later on
 
 // Create an instance of the Adafruit_NeoPixel class
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
+// to be map with real percentage data
 float accomodate_per = 0.2;
 float ignore_per = 0.2;
 float disperse_per = 0.2;
@@ -39,7 +40,6 @@ void loop() {
   strip.show();
   delay(DELAY_TIME * 2);
    
-  
   // Set colors for each section
   // Accomodate
   setSectionColor(0, accomodate_end, strip.Color(0, 255, 0)); // Green
