@@ -1,4 +1,4 @@
-bool are_all_seleciton_valid() {
+bool are_all_selection_valid() {
   if (is_selection_decade_valid() && is_selection_region_valid() && is_selection_protest_valid()) {
     return true;
   } else {

@@ -23,12 +23,12 @@ wheras if the selection is valid and all 3 hands are placed it sends a starting 
  */
 #define INPUT_ARDUINO_RX_PIN 10  //connect to RESPONSE_ARDUINO_TX_PIN
 #define INPUT_ARDUINO_TX_PIN 11  //connect to RESPONSE_ARDUINO_RX_PIN
-#define BUZZER_DECADE_FEEDBACK_PIN 
-#define BUZZER_REGION_FEEDBACK_PIN
-#define BUZZER_PROTEST_FEEDBACK_PIN
-#define LED_DECADE_FEEDBACK_PIN
-#define LED_REGION_FEEDBACK_PIN
-#define LED_PROTEST_FEEDBACK_PIN
+#define BUZZER_DECADE_FEEDBACK_PIN 5
+#define BUZZER_REGION_FEEDBACK_PIN 6
+#define BUZZER_PROTEST_FEEDBACK_PIN  7
+#define LED_DECADE_FEEDBACK_PIN 8
+#define LED_REGION_FEEDBACK_PIN 9
+#define LED_PROTEST_FEEDBACK_PIN 1
 
 SoftwareSerial serial_arduino(INPUT_ARDUINO_RX_PIN, INPUT_ARDUINO_TX_PIN);  // RX, TX pins for communication
 
@@ -42,6 +42,16 @@ int selected_protest[2] = { 0, 0 };  //first value is the new, second is the old
 void setup() {
   Serial.begin(9600);          //start the Serial communication
   serial_arduino.begin(9600);  //start SoftwareSerial communication
+
+  // Initialize buzzer pins as output
+  pinMode(BUZZER_DECADE_FEEDBACK_PIN, OUTPUT);
+  pinMode(BUZZER_REGION_FEEDBACK_PIN, OUTPUT);
+  pinMode(BUZZER_PROTEST_FEEDBACK_PIN, OUTPUT);
+
+  // Initialize LED pins as output
+  pinMode(LED_DECADE_FEEDBACK_PIN, OUTPUT);
+  pinMode(LED_REGION_FEEDBACK_PIN, OUTPUT);
+  pinMode(LED_PROTEST_FEEDBACK_PIN, OUTPUT);
 }
 
 void loop() {

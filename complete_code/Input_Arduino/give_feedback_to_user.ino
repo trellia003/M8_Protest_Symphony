@@ -1,40 +1,40 @@
 void give_feedback_to_user() {
-  audio_feedback();  //if the previous values are different make a buzzer beep
-  visual_feedback(); //if the selection is correct light up the led
+  audio_feedback();   //if the previous values are different make a buzzer beep
+  visual_feedback();  //if the selection is correct light up the led
 }
 
 void audio_feedback() {
   if (is_selection_decade_different()) {
-    //buzzer high
+    digitalWrite(BUZZER_DECADE_FEEDBACK_PIN, HIGH);  // Buzzer high
   } else {
-    //buzzer low
+    digitalWrite(BUZZER_DECADE_FEEDBACK_PIN, LOW);  // Buzzer low
   }
   if (is_selection_region_different()) {
-    //buzzer high
+    digitalWrite(BUZZER_REGION_FEEDBACK_PIN, HIGH);  // Buzzer high
   } else {
-    //buzzer low
+    digitalWrite(BUZZER_REGION_FEEDBACK_PIN, LOW);  // Buzzer low
   }
   if (is_selection_protest_different()) {
-    //buzzer high
+    digitalWrite(BUZZER_PROTEST_FEEDBACK_PIN, HIGH);  // Buzzer high
   } else {
-    //buzzer low
+    digitalWrite(BUZZER_PROTEST_FEEDBACK_PIN, LOW);  // Buzzer low
   }
 }
 
 void visual_feedback() {
   if (is_selection_decade_valid()) {
-    //led high
+    digitalWrite(LED_DECADE_FEEDBACK_PIN, HIGH);  // LED high
   } else {
-    //led low
+    digitalWrite(LED_DECADE_FEEDBACK_PIN, LOW);  // LED low
   }
   if (is_selection_region_valid()) {
-    //led high
+    digitalWrite(LED_REGION_FEEDBACK_PIN, HIGH);  // LED high
   } else {
-    //led low
+    digitalWrite(LED_REGION_FEEDBACK_PIN, LOW);  // LED low
   }
   if (is_selection_protest_valid()) {
-    //led high
+    digitalWrite(LED_PROTEST_FEEDBACK_PIN, HIGH);  // LED high
   } else {
-    //led low
+    digitalWrite(LED_PROTEST_FEEDBACK_PIN, LOW);  // LED low
   }
 }

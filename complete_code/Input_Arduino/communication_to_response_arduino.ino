@@ -1,12 +1,18 @@
-void communication_to_response_arduino(){
-  if(is_any_selection_different()){
+void communication_to_response_arduino() {
+  if (is_any_selection_different()) {
     //send reset
+    Serial.println("reset");
   }
-  if (are_all_selection_valid() && all hands){
+  if (are_all_selection_valid() && are_all_hands_placed()) {
     //send message start installation
+    Serial.println("start");
   }
 }
 
+
+bool are_all_hands_placed(){
+  return true;
+}
 
 void send_data() {
   //if perceive any change
