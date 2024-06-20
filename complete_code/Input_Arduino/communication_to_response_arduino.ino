@@ -3,15 +3,38 @@ void communication_to_response_arduino() {
     //send reset
     Serial.println("reset");
   }
-  if (are_all_selection_valid() && are_all_hands_placed()) {
+  if (are_all_selection_valid() && are_all_hands_placed()) { 
     //send message start installation
     Serial.println("start");
   }
 }
 
 
-bool are_all_hands_placed(){
-  return true;
+bool are_all_hands_placed() {
+  int LDR_threshold1 = 600;  // different LDRS have different threshold for when it is dark, real values need to be checked when LDRs are installed
+  int LDR_threshold2 = 670;
+  int LDR_threshold3 = 700;
+
+  //value parameters and reading of value
+  int LDR_value1, LDR_value2, LDR_value3;
+  LDR_value1 = analogRead(HANDSELECT_LDR_ANALOG_Pin1);
+  LDR_value2 = analogRead(HANDSELECT_LDR_ANALOG_Pin2);
+  LDR_value3 = analogRead(HANDSELECT_LDR_ANALOG_Pin3);
+  //print values of LDR
+  // Serial.print(LDR_value1);
+  // Serial.print(",");
+  // Serial.print(LDR_value2);
+  // Serial.print(",");
+  // Serial.println(LDR_value3);
+  // delay(1000);
+  //checks if light level is below threshold and therefore hand placed
+  if (LDR_value1 <= LDR_threshold1 && LDR_value2 <= LDR_threshold2 && LDR_value3 <= LDR_threshold3) {
+    // Serial.println("Hands activated");
+    return true;
+  } else {
+    // Serial.println("Not all hands active");
+    return false;
+  }
 }
 
 void send_data() {

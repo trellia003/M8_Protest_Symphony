@@ -25,11 +25,26 @@ wheras if the selection is valid and all 3 hands are placed it sends a starting 
 #define BILLBOARD_RFID_SDA_PIN 10  // Define the RFID SDA pin
 #define BILLBOARD_RFID_RST_PIN 9   // Define the RFID Reset pin
 
+
+
 #define INPUT_ARDUINO_RX_PIN 0  //connect to RESPONSE_ARDUINO_TX_PIN
 #define INPUT_ARDUINO_TX_PIN 1  //connect to RESPONSE_ARDUINO_RX_PIN
 
 
+/* 
+Connect the buzzer and LED as follow
 
+Digital pin arduino
+  |
+  |
+ (/) 270ohm
+  |
+  |
+  |
+ [ ] buzzer or led
+  |
+ GND
+*/
 #define BUZZER_DECADE_FEEDBACK_PIN 3
 #define BUZZER_REGION_FEEDBACK_PIN 7
 #define BUZZER_PROTEST_FEEDBACK_PIN 5
@@ -40,6 +55,23 @@ wheras if the selection is valid and all 3 hands are placed it sends a starting 
 
 
 #define DECADE_POTENTIOMETER_PIN A0
+
+/* code for the module 8 project to check if the hand is place on the LDR, made by Jarne Groenewegen CreaTe
+Connect the LDR in a voltage divider circuit with 10k ohm resistor, threshold values should be changed for the different LDRs as they are physical components with different values
+     5V
+      |
+      |
+     (/) LDR
+      |
+      |---- Arduino Connection
+      |
+     [ ] 10kΩ
+      |
+     GND
+*/
+#define HANDSELECT_LDR_ANALOG_Pin1 A1
+#define HANDSELECT_LDR_ANALOG_Pin2 A2
+#define HANDSELECT_LDR_ANALOG_Pin3 A3
 
 
 
@@ -75,6 +107,11 @@ void setup() {
   pinMode(LED_DECADE_FEEDBACK_PIN, OUTPUT);
   pinMode(LED_REGION_FEEDBACK_PIN, OUTPUT);
   pinMode(LED_PROTEST_FEEDBACK_PIN, OUTPUT);
+
+  //initialize LDR pins as input
+  pinMode(HANDSELECT_LDR_ANALOG_Pin1, INPUT);
+  pinMode(HANDSELECT_LDR_ANALOG_Pin2, INPUT);
+  pinMode(HANDSELECT_LDR_ANALOG_Pin3, INPUT);
 }
 
 void loop() {
