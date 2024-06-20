@@ -46,7 +46,40 @@ int get_decade() {
 }
 
 
-int get_region() {  //read the region and convert it to 0,1europe,2asia,3notrth america
+int get_region() {      //read the region and convert it to 0,1europe,2asia,3notrth america
+  int total_globe = 0;  // sum of measurements values
+  for (int i = 0; i < num_measurements_globe_buffer; i++) {
+    pot_value_globe = analogRead(GLOBE_POTMETER_ANALOG_PIN);  //Read and save analog value from potentiometer
+    // Serial.println(pot_value_globe);
+    globe_measurements_buffer[i] = pot_value_globe;
+    total_globe = total_globe + pot_value_globe;
+    // delay(100);
+  }
+  float average_globe = total_globe / (num_measurements_globe_buffer);
+  float deviation_1_globe = globe_measurements_buffer[0] - globe_measurements_buffer[num_measurements_globe_buffer];  // measures the deviation between first and last value
+  float deviation_2_globe = globe_measurements_buffer[num_measurements_globe_buffer] - globe_measurements_buffer[0];  // measures the deviation between first and last value
+
+  // Serial.println(average_globe);
+  // Serial.println(deviation_1_globe);
+  // Serial.println(deviation_2_globe);
+
+  if (deviation_1_globe <= threshold_globe && deviation_1_globe >= 0 || deviation_2_globe <= threshold_globe && deviation_2_globe >= 0) {
+    if (average_globe > 100 && average_globe < 199) {  // region 1
+      display_led_globe('g');
+      return 1;
+    } else if (average_globe > 201 && average_globe < 299) {  // region 2
+      display_led_globe('g');
+      return 2;
+    } else if (average_globe > 301 && average_globe < 399) {  // region 3
+      display_led_globe('g');
+      return 3;
+    }
+  } else {
+    display_led_globe('r');
+    return 0;
+  }
+  display_led_globe('r');
+  return 0;
 }
 
 
@@ -91,4 +124,28 @@ int read_the_RFID() {
     }
   }
   return billboard_protest_code;  // Return the protest code
+}
+
+void display_led_globe(char color) {
+  strip.begin();
+  strip.show();  // Initialize all pixels to 'off'
+  switch (color) {
+
+    case 'r':
+      // red
+      for (int i = 0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, strip.Color(255, 0, 0));  // Red color
+      }
+      strip.show();
+
+      break;
+
+    case 'g':  // green
+      for (int i = 0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, strip.Color(0, 255, 0));  // Green color
+      }
+      strip.show();
+
+      break;
+  }
 }

@@ -4,10 +4,10 @@ the input arduino code hanles all the user inputs. if there is any change it sen
 wheras if the selection is valid and all 3 hands are placed it sends a starting message to the response arduino containing the selections
 */
 
-#include <SoftwareSerial.h>  //arduino communication
-#include <SPI.h>             // Include the SPI library for communication RFID
-#include <MFRC522.h>         // Include the MFRC522 library for RFID operations RFID
-
+#include <SoftwareSerial.h>     //arduino communication
+#include <SPI.h>                // Include the SPI library for communication RFID
+#include <MFRC522.h>            // Include the MFRC522 library for RFID operations RFID
+#include <Adafruit_NeoPixel.h>  //led globe strip
 
 /*
  * Uses MIFARE RFID card using RFID-RC522 reader
@@ -74,21 +74,31 @@ Connect the LDR in a voltage divider circuit with 10k ohm resistor, threshold va
 #define HANDSELECT_LDR_ANALOG_Pin3 A3
 
 
+#define GLOBE_POTMETER_ANALOG_PIN A4
+#define GLOBE_LED_PIN 8 //uses a 510 omh between arduino and connection
+#define GLOBE_LED_QUANTITY 6
 
-SoftwareSerial serial_arduino(INPUT_ARDUINO_RX_PIN, INPUT_ARDUINO_TX_PIN);  // RX, TX pins for communication
-MFRC522 billboard_rfid(BILLBOARD_RFID_SDA_PIN, BILLBOARD_RFID_RST_PIN);     // Create MFRC522 instance
+
+SoftwareSerial serial_arduino(INPUT_ARDUINO_RX_PIN, INPUT_ARDUINO_TX_PIN);                             // RX, TX pins for communication
+MFRC522 billboard_rfid(BILLBOARD_RFID_SDA_PIN, BILLBOARD_RFID_RST_PIN);                                // Create MFRC522 instance
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(GLOBE_LED_QUANTITY, GLOBE_LED_PIN, NEO_GRB + NEO_KHZ800);  //needed for the led strip
 
 
 int selected_decade[2] = { 0, 0 };   //first value is the new, second is the old
 int selected_region[2] = { 0, 0 };   //first value is the new, second is the old
 int selected_protest[2] = { 0, 0 };  //first value is the new, second is the old //mapping{0:none, 1:,2;,3:}
-// bool is_response_running = false;    //this value is used to tell the response arduino whether to start or not
 
 
 int decade_potentiomiter_readings[] = { 0, 0, 0 };  // Array to store the readings
 int decade_potentiomiter_readIndex = 0;             // The index of the current reading
 int decade_potentiomiter_total = 0;                 // The running total
-int billboard_RFID_buffer_readings[] = { 0, 0 };    //needed to filter out the ddouble reading(0) of the RFID
+
+int billboard_RFID_buffer_readings[] = { 0, 0 };  //needed to filter out the ddouble reading(0) of the RFID
+
+const int num_measurements_globe_buffer = 15;  //how many measurements we want to make for the value descion
+const int threshold_globe = 2;                 //how much difference there can be between the values
+int globe_measurements_buffer[num_measurements_globe_buffer];
+int pot_value_globe;  // variable that saves the pot data
 
 
 void setup() {
@@ -112,6 +122,9 @@ void setup() {
   pinMode(HANDSELECT_LDR_ANALOG_Pin1, INPUT);
   pinMode(HANDSELECT_LDR_ANALOG_Pin2, INPUT);
   pinMode(HANDSELECT_LDR_ANALOG_Pin3, INPUT);
+
+  //GLOBE LED
+  pinMode(GLOBE_POTMETER_ANALOG_PIN, INPUT);  //pin for potentiometer
 }
 
 void loop() {

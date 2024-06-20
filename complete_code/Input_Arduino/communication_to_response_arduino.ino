@@ -1,11 +1,21 @@
 void communication_to_response_arduino() {
-  if (is_any_selection_different()) {
+  if (is_any_selection_different_and_valid()) {
     //send reset
-    Serial.println("reset");
+    Serial.println("RESET");
+    // Serial.println("decade:" + String(selected_decade[0]) + "   region:" + String(selected_region[0]) + "   protest:" + String(selected_protest[0]));
   }
-  if (are_all_selection_valid() && are_all_hands_placed()) { 
+  if (are_all_selection_valid() && are_all_hands_placed()) {
     //send message start installation
-    Serial.println("start");
+    // Serial.print("start====");
+    Serial.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
+  }
+}
+
+bool is_any_selection_different_and_valid() {
+  if (is_selection_decade_different() && is_selection_decade_valid() || is_selection_region_different() && is_selection_region_valid() || is_selection_protest_different() && is_selection_protest_valid()) {
+    return true;
+  } else {
+    return false;
   }
 }
 
