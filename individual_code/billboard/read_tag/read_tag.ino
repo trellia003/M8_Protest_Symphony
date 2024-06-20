@@ -20,7 +20,7 @@
 
 MFRC522 billboard_rfid(BILLBOARD_RFID_SDA_PIN, BILLBOARD_RFID_RST_PIN);  // Create MFRC522 instance
 
-int billboard_protest_code = 0;  // Variable to store protest code based on UID
+int billboard_RFID_buffer_readings[] = { 0, 0 };
 
 void setup() {
   Serial.begin(9600);         // Initialize serial communications with the PC
@@ -29,34 +29,47 @@ void setup() {
 }
 
 void loop() {
-  // Check if a new RFID card is present and read its serial number (UID)
-  if (billboard_rfid.PICC_IsNewCardPresent() && billboard_rfid.PICC_ReadCardSerial()) {
-    // If a card is present and UID is successfully read
-    String content = "";  // String to store UID as hexadecimal
-    byte letter;
+  Serial.println(filter_data());
+  delay(5);  //needs some delay? but it prints 0 and value,0 value, 0 value etc...
+}
 
-    // Construct the UID string in hexadecimal format
+
+int filter_data() {       //usually the reading of the rfid output the card number and then a 0, I tried to fix it a lot. i just used a buffer
+  billboard_RFID_buffer_readings[1] = billboard_RFID_buffer_readings[0];  //use the buffer to store the last two readings, if a card is read one of them should be 0 and the other not.
+  billboard_RFID_buffer_readings[0] = read_the_RFID();
+  if (billboard_RFID_buffer_readings[1] != 0) {  //if the last element is not 0, we want to use that card number
+    return billboard_RFID_buffer_readings[1];
+  } else {  //otherwise if the buffer[1] is 0, the buffer[0] is either a 0 oe a number, and we just use that because yes.
+    return billboard_RFID_buffer_readings[0];
+  }
+}
+
+int read_the_RFID() {
+  int billboard_protest_code = 0;  // Initialize the protest code to 0
+
+  // Check if a new RFID card is present and read its serial number
+  if (billboard_rfid.PICC_IsNewCardPresent() && billboard_rfid.PICC_ReadCardSerial()) {
+    String content = "";  // Initialize an empty string to store the UID
+
+    // Loop through each byte of the UID and convert it to a hexadecimal string
     for (byte i = 0; i < billboard_rfid.uid.size; i++) {
-      content.concat(String(billboard_rfid.uid.uidByte[i] < 0x10 ? " 0" : " "));  // Add leading 0 if byte is less than 0x10
-      content.concat(String(billboard_rfid.uid.uidByte[i], HEX));  // Convert byte to hexadecimal string
+      // Append a leading zero if the byte is less than 0x10 for proper formatting
+      content.concat(String(billboard_rfid.uid.uidByte[i] < 0x10 ? " 0" : " "));
+      // Append the byte in hexadecimal format
+      content.concat(String(billboard_rfid.uid.uidByte[i], HEX));
     }
     content.toUpperCase();  // Convert UID string to uppercase for uniformity
 
-    // Compare UID string to known values and set protest code accordingly
-    if (content.substring(1) == "73 F3 0B 1A") {  // First UID: E3 E7 49 9F
-      billboard_protest_code = 1;  // Set protest code 1
-    } else if (content.substring(1) == "03 B7 86 15") {  // Second UID: 53 D0 D9 9E
-      billboard_protest_code = 2;  // Set protest code 2
-    } else if (content.substring(1) == "D3 6F 65 95") {  // Third UID: E3 18 4A 9F
-      billboard_protest_code = 3;  // Set protest code 3
+    // Check if the UID matches a known protest code
+    if (content.substring(1) == "73 F3 0B 1A") {         // First UID
+      billboard_protest_code = 1;                        // Set protest code to 1
+    } else if (content.substring(1) == "03 B7 86 15") {  // Second UID
+      billboard_protest_code = 2;                        // Set protest code to 2
+    } else if (content.substring(1) == "D3 6F 65 95") {  // Third UID
+      billboard_protest_code = 3;                        // Set protest code to 3
     } else {
       billboard_protest_code = 0;  // Unknown UID, set protest code to 0
     }
-  } else {
-    billboard_protest_code = 0;  // No card present or UID read failed, set protest code to 0
   }
-
-  // Print the protest code to the Serial monitor
-  Serial.println(billboard_protest_code);
-  delay(500); //needs some delay? but it prints 0 and value,0 value, 0 value etc...
+  return billboard_protest_code;  // Return the protest code
 }
