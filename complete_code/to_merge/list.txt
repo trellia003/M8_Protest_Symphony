@@ -1,10 +1,10 @@
 MERGED:
 individual_code\billboard\read_tag\read_tag.ino
 individual_code/decade/potentiometer/potentiometer.ino
+individual_code/LDR_hand_selection/hand_ldr_arduino_code_V2/hand_ldr_arduino_code_V2.ino
 
 
 
 TOMERGE:
 individual_code/LED/LED_control/LED_control.ino
-individual_code/LDR_hand_selection/hand_ldr_arduino_code_V2/hand_ldr_arduino_code_V2.ino
 individual_code/globe/globe_arduino_code_V2/globe_arduino_code_V2.ino
