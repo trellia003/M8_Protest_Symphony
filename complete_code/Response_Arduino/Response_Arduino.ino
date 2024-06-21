@@ -20,14 +20,13 @@ Stepper stepper = Stepper(360, stepper_pin1, stepper_pin2, stepper_pin3, stepper
 
 
 //change these variables to match the received information from the table sent from arduino 1.
-// int decade = 0;
-// int region = 0;
-// int protest = 0;
+int decade = 0;
+int region = 0;
+int protest = 0;
 
 int phase = 1;       //Can be 'Selection' (1), 'Response'(2) or 'Reset'(3). Phases go in a loop: Selection->Response->Reset->Selection, and should only ever go to the 'next' phase.
 int current_response = 0;         //used to switch from one response to the other.
 int percentage_shown = 0;
-int LED_ring_color[100];  //see int_to_color function for conversion
 int stepstaken = 0;               //keeps track of where the stepper motor is
 
 void setup() {
@@ -40,6 +39,7 @@ void loop() {
   receive_data(); // triggers phase updates & updates decade,region & demand
   switch (phase) {
     case 1:
+      //there is actually no code to be run repeatedly by the response Arduino during the selection phase.
       break;
     case 2:
       show_response();
@@ -86,6 +86,8 @@ void show_response() {
 }
 
 void selection_voiceover(){
+  //All LED's off
+  //Play selection voice over
 }
 
 void accomodation(int percentage) {  //should take 5 seconds total
@@ -127,13 +129,15 @@ void all_responses_on() {  //after all responses are shown, this code runs
 
 void full_reset() {
   // play slow whoop reset sound? (reset volume if necessary)
-  // make LED loading bar while resetting puppets
+  // make red LED loading bar while resetting puppets
 
   // lower flag+(led's) if needed
   // return politicians if needed
   // reset puppets if needed
   // raise net if needed
   // move net mast back if needed
+
+  // microwave ping (?)
   enter_selection_phase();
 }
 
@@ -143,7 +147,7 @@ void enter_selection_phase(){
   phase = 1;
 }
 
-int get_percentage(int response) {
+int get_percentage(int response) { //table colums: region,decade,protest,acc,ign,dis,arr,vio.  Region 1 = Europe, 2 = Asia, 3 = N.A., Protest: 1 = Political, 2 = wages, 3 = Police Brutality
   if (response >= 1 && response <= 5) {
     //add code here for loading percentage for each response
     int percentage = 0;
