@@ -5,9 +5,10 @@
 void setup() {
   // Set the fog machine pin as an output
   pinMode(GOVERNMENTRESPONSE_HUMIDITY_PWM_PIN, OUTPUT);
+  
 }
 
-void loop() {
+void fogmachine () {
   // Turn the fog machine on
   digitalWrite(GOVERNMENTRESPONSE_HUMIDITY_PWM_PIN, 255);
   
@@ -16,4 +17,5 @@ void loop() {
   
   // Turn the fog machine off
   digitalWrite(GOVERNMENTRESPONSE_HUMIDITY_PWM_PIN, LOW);
+
 }
