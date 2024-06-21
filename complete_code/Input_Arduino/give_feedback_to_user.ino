@@ -1,5 +1,5 @@
 void give_feedback_to_user() {
-  audio_feedback();   //if the previous values are different make a buzzer beep
+  audio_feedback();   //if the new value is valid and different from the previou one make a buzzer beep
   visual_feedback();  //if the selection is correct light up the led
 }
 

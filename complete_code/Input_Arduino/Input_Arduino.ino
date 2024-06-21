@@ -1,6 +1,6 @@
 /*
 THIS IS THE INPUT ARDUINO CODE
-the input arduino code hanles all the user inputs. if there is any change it sends a reset message to the response_arduino.
+the input arduino code hanles all the user inputs. if there is a valid change in any selection it sends a reset message to the response_arduino.
 wheras if the selection is valid and all 3 hands are placed it sends a starting message to the response arduino containing the selections
 */
 
@@ -74,8 +74,15 @@ Connect the LDR in a voltage divider circuit with 10k ohm resistor, threshold va
 #define HANDSELECT_LDR_ANALOG_Pin3 A3
 
 
+/*
+arduino
+    |
+  510 omh
+    |
+LED connection 
+*/
+#define GLOBE_LED_PIN 8  //uses a 510 omh between arduino and connection
 #define GLOBE_POTMETER_ANALOG_PIN A4
-#define GLOBE_LED_PIN 8 //uses a 510 omh between arduino and connection
 #define GLOBE_LED_QUANTITY 6
 
 
@@ -95,10 +102,10 @@ int decade_potentiomiter_total = 0;                 // The running total
 
 int billboard_RFID_buffer_readings[] = { 0, 0 };  //needed to filter out the ddouble reading(0) of the RFID
 
-const int num_measurements_globe_buffer = 15;  //how many measurements we want to make for the value descion
-const int threshold_globe = 2;                 //how much difference there can be between the values
-int globe_measurements_buffer[num_measurements_globe_buffer];
-int pot_value_globe;  // variable that saves the pot data
+const int num_measurements_globe_buffer = 15;                  //how many measurements we want to make for the value descion
+const int threshold_globe = 2;                                 //how much difference there can be between the values
+int globe_measurements_buffer[num_measurements_globe_buffer];  //initialize the buffer
+int pot_value_globe;                                           // variable that saves the pot data
 
 
 void setup() {

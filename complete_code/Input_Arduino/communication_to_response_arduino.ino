@@ -1,5 +1,5 @@
 void communication_to_response_arduino() {
-  if (is_any_selection_different_and_valid()) {
+  if (is_any_selection_different_and_valid()) {  //if any selection is different from it's previous one and valid
     //send reset
     Serial.println("RESET");
     // Serial.println("decade:" + String(selected_decade[0]) + "   region:" + String(selected_region[0]) + "   protest:" + String(selected_protest[0]));
@@ -11,7 +11,7 @@ void communication_to_response_arduino() {
   }
 }
 
-bool is_any_selection_different_and_valid() {
+bool is_any_selection_different_and_valid() { //if any selection is different from it's previous one and valid
   if (is_selection_decade_different() && is_selection_decade_valid() || is_selection_region_different() && is_selection_region_valid() || is_selection_protest_different() && is_selection_protest_valid()) {
     return true;
   } else {
@@ -45,11 +45,4 @@ bool are_all_hands_placed() {
     // Serial.println("Not all hands active");
     return false;
   }
-}
-
-void send_data() {
-  //if perceive any change
-  // String output = "S:" + String(is_response_start) + ",D:" + String(decade[0]) + ",R:" + String(region[0]) + ",P:" + String(protest[0]);
-  //Serial.println(output);          // Print to serial for debugging
-  //serial_arduino.println(output);  // Send the string via SoftwareSerial
 }
