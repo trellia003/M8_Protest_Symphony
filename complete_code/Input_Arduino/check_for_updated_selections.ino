@@ -1,4 +1,4 @@
-bool is_any_selection_different() {
+bool is_any_selection_different() {  //any of the 3 selection is different from it's previous one
   if (is_selection_decade_different() || is_selection_region_different() || is_selection_protest_different()) {
     return true;
   } else {
@@ -6,7 +6,7 @@ bool is_any_selection_different() {
   }
 }
 
-bool is_selection_decade_different() {
+bool is_selection_decade_different() {  //if the current decade is different from the previous
   if (selected_decade[0] != selected_decade[1]) {
     return true;
   } else {

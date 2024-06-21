@@ -1,0 +1,21 @@
+// Can be any PWM pin
+#define GOVERNMENTRESPONSE_HUMIDITY_PWM_PIN 3
+//red wire needs to be connected to the 5 volt output of arduino
+//black wire needs to be connected to the ground of the arduino
+void setup() {
+  // Set the fog machine pin as an output
+  pinMode(GOVERNMENTRESPONSE_HUMIDITY_PWM_PIN, OUTPUT);
+  
+}
+
+void fogmachine () {
+  // Turn the fog machine on
+  digitalWrite(GOVERNMENTRESPONSE_HUMIDITY_PWM_PIN, 255);
+  
+  //change this to the right amount after testing
+  delay(5000);
+  
+  // Turn the fog machine off
+  digitalWrite(GOVERNMENTRESPONSE_HUMIDITY_PWM_PIN, LOW);
+
+}
