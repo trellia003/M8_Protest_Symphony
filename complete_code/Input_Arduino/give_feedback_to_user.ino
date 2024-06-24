@@ -4,7 +4,6 @@ void give_feedback_to_user() {
 }
 
 void audio_feedback() {
-  // Serial.println(String(is_selection_decade_different())+String(is_selection_region_different())+String(is_selection_protest_different()));
   if (is_selection_decade_different() && is_selection_decade_valid()) {
     digitalWrite(BUZZER_DECADE_FEEDBACK_PIN, HIGH);  // Buzzer high
   } else {
