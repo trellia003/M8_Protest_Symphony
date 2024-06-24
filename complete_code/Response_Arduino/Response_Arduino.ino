@@ -6,8 +6,8 @@ THIS IS THE RESPONSE ARDUINO CODE
 #include <SoftwareSerial.h>
 #include <Stepper.h>
 
-#define RESPONSE_ARDUINO_RX_PIN 10  //connect to INPUT_ARDUINO_RX_PIN
-#define RESPONSE_ARDUINO_TX_PIN 11  //connect to INPUT_ARDUINO_RX_PIN
+#define RESPONSE_ARDUINO_RX_PIN 19 //connect to INPUT_ARDUINO_TX_PIN
+#define RESPONSE_ARDUINO_TX_PIN 18  //connect to INPUT_ARDUINO_RX_PIN
 
 #define stepper_pin1 1      //revise this later, used to initialize the steppermotor
 #define stepper_pin2 2      //revise this later, used to initialize the steppermotor
@@ -161,14 +161,14 @@ void receive_data() { //reads selection or reset messages and transitions to the
     String receivedString = serial_arduino.readStringUntil('\n');  // Read data until newline character
     Serial.println("Received: " + receivedString);                 // Print received string for debugging
 
-    if (receivedString.startsWith("RESPOND") && phase = 1) {
-      //use message to update decade variable
-      //use message to update region variable
-      //use message to update demand variable
-      phase = 2;
-    }
-    if (receivedString = "RESET" && phase = 2){
-      phase = 3;
-    }
+    // if (receivedString.startsWith("RESPOND") && phase = 1) {
+    //   //use message to update decade variable
+    //   //use message to update region variable
+    //   //use message to update demand variable
+    //   phase = 2;
+    // }
+    // if (receivedString = "RESET" && phase = 2){
+    //   phase = 3;
+    // }
   }
 }
