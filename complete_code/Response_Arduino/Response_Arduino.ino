@@ -59,7 +59,7 @@ int violence_percent = 0;
 
 int phase = 1;       //Can be 'Selection' (1), 'Response'(2) or 'Reset'(3). Phases go in a loop: Selection->Response->Reset->Selection, and should only ever go to the 'next' phase.
 int current_response = 0;         //used to switch from one response to the other.
-int percentage_shown = 0;
+int percentage_shown = 0;         //update within response_LED()
 int stepstaken = 0;               //keeps track of where the stepper motor is
 
 void setup() {
@@ -68,6 +68,7 @@ void setup() {
   stepper.setSpeed(300);  //RPM, a high value, because in the code we assume movements are instant.
 
   strip.begin();
+  
   initialize_SD();
   open_file("protest.csv");
   read_data(region, decade, protest);
@@ -187,6 +188,7 @@ void full_reset() {
 
 void enter_selection_phase(){
   // set LED rings to white
+  set_all_color(strip.Color(255, 255, 255));
   // play general protesting sounds
   phase = 1;
 }

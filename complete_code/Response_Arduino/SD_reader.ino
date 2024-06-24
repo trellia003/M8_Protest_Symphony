@@ -50,6 +50,7 @@ void process_line(String line, int region, int decade, int protest) {
     arrest_percent = col7;
     violence_percent = col8;
     
+    Serial.print("SD READ: ");
     Serial.print("Accomodate: ");
     Serial.print(accomodate_percent);
     Serial.print(", Ignore: ");
