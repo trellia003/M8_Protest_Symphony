@@ -97,7 +97,6 @@ void processLine(String line, int region, int decade, int protest) {
     arrestPercent = col7;
     violencePercent = col8;
     
-    
     Serial.print("Accomodate: ");
     Serial.print(accomodatePercent);
     Serial.print(", Ignore: ");
