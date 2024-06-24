@@ -21,6 +21,7 @@ wheras if the selection is valid and all 3 hands are placed it sends a starting 
  * SPI MISO    MISO         12 / ICSP-1   
  * SPI SCK     SCK          13 / ICSP-3   
  */
+
 #define BILLBOARD_RFID_SDA_PIN 10  // Define the RFID SDA pin
 #define BILLBOARD_RFID_RST_PIN 9   // Define the RFID Reset pin
 
@@ -108,7 +109,6 @@ void setup() {
   SPI.begin();                 // Initialize SPI bus RFID
   billboard_rfid.PCD_Init();   // Initialize MFRC522 RFID
 
-
   // Initialize buzzer pins as output
   pinMode(BUZZER_DECADE_FEEDBACK_PIN, OUTPUT);
   pinMode(BUZZER_REGION_FEEDBACK_PIN, OUTPUT);
@@ -136,5 +136,4 @@ void loop() {
   give_feedback_to_user();              //provide feedback to the user with 3 buzzer sound(when a selection is changed) and 3 led (if the selction is correct). 1led and 1 buzzer per input
   communication_to_response_arduino();  //send messages to the response arduino reset=(if a selection is changed) and start=( if the input is valud and the hands are there )
   delay(10);                            //MAYBE INCREASE IT ? FOR BUZZER SOUND AND RFID READING
-  // Serial.println("decade:"+String(selected_decade[0])+"   region:"+String(selected_region[0])+"   protest:"+String(selected_protest[0]));
 }

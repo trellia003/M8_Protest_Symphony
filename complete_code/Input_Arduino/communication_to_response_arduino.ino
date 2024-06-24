@@ -1,23 +1,16 @@
 //MAYBE ADD A BUFFER SO IT SENSD MSG ONLY IF THE PREVIOUS MESSAGE IS DIFFERENT(OnLY start reset), it does not matter the selections
 
-
-
 void communication_to_response_arduino() {
   // if (is_any_selection_different_and_valid()) {  //if any selection is different from it's previous one and valid
-   if (digitalRead(RESET_BUTTON_PIN)) {  //if reset button is pressed
-    //send reset
-    // serial_arduino.println("RESET");
+  if (digitalRead(RESET_BUTTON_PIN)) {  //if reset button is pressed
     Serial1.println("RESET/");
-    // Serial.println("decade:" + String(selected_decade[0]) + "   region:" + String(selected_region[0]) + "   protest:" + String(selected_protest[0]));
   }
   if (are_all_selection_valid() && are_all_hands_placed()) {
-    //send message start installation
-    // Serial.print("start====");
     Serial1.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
   }
 }
 
-bool is_any_selection_different_and_valid() { //if any selection is different from it's previous one and valid
+bool is_any_selection_different_and_valid() {  //if any selection is different from it's previous one and valid
   if (is_selection_decade_different() && is_selection_decade_valid() || is_selection_region_different() && is_selection_region_valid() || is_selection_protest_different() && is_selection_protest_valid()) {
     return true;
   } else {
