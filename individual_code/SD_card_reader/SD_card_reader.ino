@@ -4,16 +4,17 @@
 #define DATA_SD_CS_PIN 10  // Change this to the pin used for SD card module
 
 /*
-Reader PIN - Arduino PIN
-------------------------
-GND        - GND
-VCC        - 5V
-MISO*      - 12
-MOSI*      - 11
-SCK *      - 13
-CS         - 10
+Reader PIN - Arduino Uno PIN - Arduino Mega PIN
+-----------------------------------------------
+GND        - GND             - GND
+VCC        - 5V              - 
+MISO*      - 12              - 50
+MOSI*      - 11              - 51
+SCK *      - 13              - 52
+CS         - 10              - 53
 
-*fixed pin
+
+*SPI pin
 
 */
 
