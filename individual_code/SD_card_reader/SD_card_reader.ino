@@ -41,6 +41,7 @@ void setup() {
 }
 
 void loop() {
+  //Nothing
   readData(region, decade, protest);
 }
 
@@ -96,7 +97,7 @@ void processLine(String line, int region, int decade, int protest) {
     arrestPercent = col7;
     violencePercent = col8;
     
-    /*
+    
     Serial.print("Accomodate: ");
     Serial.print(accomodatePercent);
     Serial.print(", Ignore: ");
@@ -107,7 +108,7 @@ void processLine(String line, int region, int decade, int protest) {
     Serial.print(arrestPercent);
     Serial.print(", Violence: ");
     Serial.println(violencePercent);
-    */
+    
   }
 }
 
