@@ -86,6 +86,9 @@ LED connection
 #define GLOBE_LED_QUANTITY 6
 
 
+#define RESET_BUTTON_PIN A5
+
+
 SoftwareSerial serial_arduino(INPUT_ARDUINO_RX_PIN, INPUT_ARDUINO_TX_PIN);                             // RX, TX pins for communication
 MFRC522 billboard_rfid(BILLBOARD_RFID_SDA_PIN, BILLBOARD_RFID_RST_PIN);                                // Create MFRC522 instance
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(GLOBE_LED_QUANTITY, GLOBE_LED_PIN, NEO_GRB + NEO_KHZ800);  //needed for the led strip
@@ -132,6 +135,9 @@ void setup() {
 
   //GLOBE LED
   pinMode(GLOBE_POTMETER_ANALOG_PIN, INPUT);  //pin for potentiometer
+
+  //reset button
+  pinMode(RESET_BUTTON_PIN, INPUT); // Set the button pin as input
 }
 
 void loop() {
