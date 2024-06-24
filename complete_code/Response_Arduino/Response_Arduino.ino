@@ -5,6 +5,9 @@ THIS IS THE RESPONSE ARDUINO CODE
 
 #include <SoftwareSerial.h>
 #include <Stepper.h>
+#include <Adafruit_NeoPixel.h>
+#include <SPI.h>
+#include <SD.h>
 
 #define RESPONSE_ARDUINO_RX_PIN 19 //connect to INPUT_ARDUINO_TX_PIN
 #define RESPONSE_ARDUINO_TX_PIN 18  //connect to INPUT_ARDUINO_RX_PIN
@@ -15,14 +18,44 @@ THIS IS THE RESPONSE ARDUINO CODE
 #define stepper_pin4 4      //revise this later, used to initialize the steppermotor
 #define motor_to_arm_ratio  //amount of rotations the motor needs to do one full rotation of the arm
 
+#define STRIP_LED_PIN 6     //might be changed
+
+#define NUM_LEDS 240 //number of LEDs on the strip
+
+#define DATA_SD_CS_PIN 53 //CS pin on the MicroSD reader
+
+/*
+Reader PIN - Arduino Uno PIN - Arduino Mega PIN
+-----------------------------------------------
+GND        - GND             - GND
+VCC        - 5V              - 
+MISO*      - 12              - 50
+MOSI*      - 11              - 51
+SCK *      - 13              - 52
+CS         - 10              - 53
+
+*SPI pin
+
+*/
+
+
 SoftwareSerial serial_arduino(RESPONSE_ARDUINO_RX_PIN, RESPONSE_ARDUINO_TX_PIN);  // RX, TX pins for communication
 Stepper stepper = Stepper(360, stepper_pin1, stepper_pin2, stepper_pin3, stepper_pin4);
 
+Adafruit_NeoPixel strip(NUM_LEDS, STRIP_LED_PIN, NEO_GRB + NEO_KHZ800); // Create an instance of the Adafruit_NeoPixel class
+
+File data_file;  //Create a File object to store all of Protest data 
 
 //change these variables to match the received information from the table sent from arduino 1.
-int decade = 0;
 int region = 0;
+int decade = 0;
 int protest = 0;
+
+int accomodate_percent = 0;
+int ignore_percent = 0;
+int disperse_percent = 0;
+int arrest_percent = 0;
+int violence_percent = 0;
 
 int phase = 1;       //Can be 'Selection' (1), 'Response'(2) or 'Reset'(3). Phases go in a loop: Selection->Response->Reset->Selection, and should only ever go to the 'next' phase.
 int current_response = 0;         //used to switch from one response to the other.
@@ -33,9 +66,15 @@ void setup() {
   Serial.begin(9600);
   serial_arduino.begin(9600);
   stepper.setSpeed(300);  //RPM, a high value, because in the code we assume movements are instant.
+
+  strip.begin();
+  initialize_SD();
+  open_file("protest.csv");
+  read_data(region, decade, protest);
 }
 
 void loop() {
+  strip.clear();
   receive_data(); // triggers phase updates & updates decade,region & demand
   switch (phase) {
     case 1:
@@ -92,18 +131,21 @@ void selection_voiceover(){
 
 void accomodation(int percentage) {  //should take 5 seconds total
   //add new LED's
+  response_LED(current_response, percentage);
   //play new sound
   //Raise flag + flag LEDS
 }
 
 void ignore(int percentage) {  //should take 5 seconds total
   //add new LED's
+  response_LED(current_response, percentage);
   //play new sound
   //turn around politician
 }
 
 void dispersal(int percentage) {  //should take 5 seconds total
   //add new LED's
+  response_LED(current_response, percentage);
   //play new sound
   //enable smoke machine
   //drop puppets
@@ -111,6 +153,7 @@ void dispersal(int percentage) {  //should take 5 seconds total
 
 void arrest(int percentage) {  //should take 5 seconds total
   //add new LED's
+  response_LED(current_response, percentage);
   //play new sound
   //move netmast with arm
   //lower net
@@ -119,6 +162,7 @@ void arrest(int percentage) {  //should take 5 seconds total
 
 void violence(int percentage) {  //should take 5 seconds total
   //add new LED's
+  response_LED(current_response, percentage);
   //play shooting sounds timed with (random) puppets dropping
 }
 
@@ -149,8 +193,24 @@ void enter_selection_phase(){
 
 int get_percentage(int response) { //table colums: region,decade,protest,acc,ign,dis,arr,vio.  Region 1 = Europe, 2 = Asia, 3 = N.A., Protest: 1 = Political, 2 = wages, 3 = Police Brutality
   if (response >= 1 && response <= 5) {
-    //add code here for loading percentage for each response
     int percentage = 0;
+    switch (response) {
+      case 1:
+        percentage = accomodate_percent;
+        break;
+      case 2:
+        percentage = ignore_percent;
+        break;
+      case 3:
+        percentage = disperse_percent;
+        break;
+      case 4:
+        percentage = arrest_percent;
+        break;
+      case 5:
+        percentage = violence_percent;
+        break;
+    }
     return percentage;
   }
   return 0;

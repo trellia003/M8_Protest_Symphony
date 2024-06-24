@@ -1,58 +1,12 @@
-#include <SPI.h>
-#include <SD.h>
-
-#define DATA_SD_CS_PIN 10  // Change this to the pin used for SD card module
-
-/*
-Reader PIN - Arduino Uno PIN - Arduino Mega PIN
------------------------------------------------
-GND        - GND             - GND
-VCC        - 5V              - 
-MISO*      - 12              - 50
-MOSI*      - 11              - 51
-SCK *      - 13              - 52
-CS         - 10              - 53
-
-*SPI pin
-
-*/
-
-File dataFile;
-
-// Example input values
-int region = 1;
-int decade = 2;
-int protest = 3;
-
-int accomodatePercent = 0;
-int ignorePercent = 0;
-int dispersePercent = 0;
-int arrestPercent = 0;
-int violencePercent = 0;
-
-void setup() {
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect
+void read_data(int region, int decade, int protest) {
+  while (data_file.available()) {
+    String line = data_file.readStringUntil('\n');
+    process_line(line, region, decade, protest);
   }
-  initializeSD();
-  openFile("protest.csv");
-  readData(region, decade, protest);
+  data_file.close();
 }
 
-void loop() {
-  //Nothing
-}
-
-void readData(int region, int decade, int protest) {
-  while (dataFile.available()) {
-    String line = dataFile.readStringUntil('\n');
-    processLine(line, region, decade, protest);
-  }
-  dataFile.close();
-}
-
-void processLine(String line, int region, int decade, int protest) {
+void process_line(String line, int region, int decade, int protest) {
   int colIndex = 0;
   int col4 = -1, col5 = -1, col6 = -1, col7 = -1, col8 = -1;
   bool match = true;
@@ -90,27 +44,27 @@ void processLine(String line, int region, int decade, int protest) {
   }
 
   if (match) {
-    accomodatePercent = col4;
-    ignorePercent = col5;
-    dispersePercent = col6;
-    arrestPercent = col7;
-    violencePercent = col8;
+    accomodate_percent = col4;
+    ignore_percent = col5;
+    disperse_percent = col6;
+    arrest_percent = col7;
+    violence_percent = col8;
     
     Serial.print("Accomodate: ");
-    Serial.print(accomodatePercent);
+    Serial.print(accomodate_percent);
     Serial.print(", Ignore: ");
-    Serial.print(ignorePercent);
+    Serial.print(ignore_percent);
     Serial.print(", Disperse: ");
-    Serial.print(dispersePercent);
+    Serial.print(disperse_percent);
     Serial.print(", Arrest: ");
-    Serial.print(arrestPercent);
+    Serial.print(arrest_percent);
     Serial.print(", Violence: ");
-    Serial.println(violencePercent);
+    Serial.println(violence_percent);
     
   }
 }
 
-void initializeSD() {
+void initialize_SD() {
   Serial.println("Initializing SD card...");
   pinMode(DATA_SD_CS_PIN, OUTPUT);
 
@@ -122,9 +76,9 @@ void initializeSD() {
   }
 }
 
-int openFile(char filename[]) {
-  dataFile = SD.open(filename);
-  if (dataFile) {
+int open_file(char file_name[]) {
+  data_file = SD.open(file_name);
+  if (data_file) {
     Serial.println("File opened successfully!");
     return 1;
   } else {

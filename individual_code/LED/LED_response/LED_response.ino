@@ -1,11 +1,11 @@
 #include <Adafruit_NeoPixel.h>
 // Define the pin where the LED data line is connected
-#define LED_STRIP_PIN 6 //might be changed
+#define STRIP_LED_PIN 6 //might be changed
 // Define the number of LEDs
 #define NUM_LEDS 240
 
 // Create an instance of the Adafruit_NeoPixel class
-Adafruit_NeoPixel strip(NUM_LEDS, LED_STRIP_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip(NUM_LEDS, STRIP_LED_PIN, NEO_GRB + NEO_KHZ800);
 
 int percentage = 0;
 int percentage_shown = 0;
