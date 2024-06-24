@@ -4,7 +4,6 @@ the input arduino code hanles all the user inputs. if there is a valid change in
 wheras if the selection is valid and all 3 hands are placed it sends a starting message to the response arduino containing the selections
 */
 
-#include <SoftwareSerial.h>     //arduino communication
 #include <SPI.h>                // Include the SPI library for communication RFID
 #include <MFRC522.h>            // Include the MFRC522 library for RFID operations RFID
 #include <Adafruit_NeoPixel.h>  //led globe strip
@@ -24,11 +23,6 @@ wheras if the selection is valid and all 3 hands are placed it sends a starting 
  */
 #define BILLBOARD_RFID_SDA_PIN 10  // Define the RFID SDA pin
 #define BILLBOARD_RFID_RST_PIN 9   // Define the RFID Reset pin
-
-
-
-#define INPUT_ARDUINO_RX_PIN 0  //connect to RESPONSE_ARDUINO_TX_PIN
-#define INPUT_ARDUINO_TX_PIN 1  //connect to RESPONSE_ARDUINO_RX_PIN
 
 
 /* 
@@ -88,8 +82,6 @@ LED connection
 
 #define RESET_BUTTON_PIN A5
 
-
-SoftwareSerial serial_arduino(INPUT_ARDUINO_RX_PIN, INPUT_ARDUINO_TX_PIN);                             // RX, TX pins for communication
 MFRC522 billboard_rfid(BILLBOARD_RFID_SDA_PIN, BILLBOARD_RFID_RST_PIN);                                // Create MFRC522 instance
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(GLOBE_LED_QUANTITY, GLOBE_LED_PIN, NEO_GRB + NEO_KHZ800);  //needed for the led strip
 
@@ -112,8 +104,7 @@ int pot_value_globe;                                           // variable that 
 
 
 void setup() {
-  Serial.begin(9600);          //start the Serial communication
-  serial_arduino.begin(9600);  //start SoftwareSerial communication
+  Serial1.begin(9600);          //start the Serial communication
   SPI.begin();                 // Initialize SPI bus RFID
   billboard_rfid.PCD_Init();   // Initialize MFRC522 RFID
 

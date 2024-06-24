@@ -7,13 +7,13 @@ void communication_to_response_arduino() {
    if (digitalRead(RESET_BUTTON_PIN)) {  //if reset button is pressed
     //send reset
     // serial_arduino.println("RESET");
-    Serial.println("RESET/");
+    Serial1.println("RESET/");
     // Serial.println("decade:" + String(selected_decade[0]) + "   region:" + String(selected_region[0]) + "   protest:" + String(selected_protest[0]));
   }
   if (are_all_selection_valid() && are_all_hands_placed()) {
     //send message start installation
     // Serial.print("start====");
-    Serial.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
+    Serial1.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
   }
 }
 
