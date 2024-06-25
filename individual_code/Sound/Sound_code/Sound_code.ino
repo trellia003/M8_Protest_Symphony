@@ -30,8 +30,8 @@ void setup() {
 
 void loop() {
   delay(3000);
-  //playResponseSound(5);
-  playSelectionVoiceOver(1, 1, 1);
+  playResponseSound(5);
+  //playSelectionVoiceOver(1, 1, 1);
   /*
   delay(5000);
   playTheSound(2);

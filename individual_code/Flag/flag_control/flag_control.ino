@@ -8,20 +8,16 @@ int flagRaise = 1; //Signal to raise the flag
 
 void setup() {
   flagServo.attach(FLAG_SERVO_PIN);  // Attach the ATS90M 360 servo to pin 9
-  //pinMode(FLAG_FAN_PIN, OUTPUT);  // Set the fan control pin as output
-  digitalWrite(FLAG_FAN_PIN, LOW);  // Ensure the fan is off initially
 }
 
 void loop() {
   while (flagRaise == 1) {
     // Stop the servo
     flagServo.write(90);  // 90 degrees (1500 microseconds) stops the servo
-    //digitalWrite(FLAG_FAN_PIN, LOW);  // Turn the fan off
     delay(1000);  // Wait for 1 second
 
     // Rotate servo in one direction - RAISE FLAG
     flagServo.write(180);  // Less than 90 degrees for one direction
-    //digitalWrite(FLAG_FAN_PIN, HIGH);  // Ensure the fan is on
     delay(700);  // Servo spin time 
 
     // Stop the servo - KEEP THE FLAG VISIBLE
@@ -30,7 +26,6 @@ void loop() {
 
     // Rotate servo in the opposite direction - LOWER FLAG
     flagServo.write(0);  // More than 90 degrees for the opposite direction
-    //digitalWrite(FLAG_FAN_PIN, LOW);  // Turn the fan off
     delay(750);  // Servo spin time
 
     // Stop the servo
