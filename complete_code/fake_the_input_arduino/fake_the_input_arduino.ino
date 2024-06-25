@@ -1,3 +1,21 @@
+// 0 null
+// 1 Europe
+// 2 asia
+// 3 north America
+
+// 0 null
+// 1 politics
+// 2 wages
+// 3 police brutality
+
+// 0 null
+// 1 1990
+// 2 2000
+// 3 2010
+
+
+
+
 void setup() {
   // Initialize both Serial and Serial1
   Serial.begin(9600);
