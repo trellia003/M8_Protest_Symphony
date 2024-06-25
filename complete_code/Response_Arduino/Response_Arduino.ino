@@ -3,14 +3,10 @@ THIS IS THE RESPONSE ARDUINO CODE
 
 */
 
-#include <SoftwareSerial.h>
 #include <Stepper.h>
 #include <Adafruit_NeoPixel.h>
 #include <SPI.h>
 #include <SD.h>
-
-#define RESPONSE_ARDUINO_RX_PIN 19 //connect to INPUT_ARDUINO_TX_PIN
-#define RESPONSE_ARDUINO_TX_PIN 18  //connect to INPUT_ARDUINO_RX_PIN
 
 #define stepper_pin1 1      //revise this later, used to initialize the steppermotor
 #define stepper_pin2 2      //revise this later, used to initialize the steppermotor
@@ -19,7 +15,6 @@ THIS IS THE RESPONSE ARDUINO CODE
 #define motor_to_arm_ratio  //amount of rotations the motor needs to do one full rotation of the arm
 
 #define STRIP_LED_PIN 6     //might be changed
-
 #define NUM_LEDS 240 //number of LEDs on the strip
 
 #define DATA_SD_CS_PIN 53 //CS pin on the MicroSD reader
@@ -39,11 +34,8 @@ CS         - 10              - 53
 */
 
 
-SoftwareSerial serial_arduino(RESPONSE_ARDUINO_RX_PIN, RESPONSE_ARDUINO_TX_PIN);  // RX, TX pins for communication
 Stepper stepper = Stepper(360, stepper_pin1, stepper_pin2, stepper_pin3, stepper_pin4);
-
 Adafruit_NeoPixel strip(NUM_LEDS, STRIP_LED_PIN, NEO_GRB + NEO_KHZ800); // Create an instance of the Adafruit_NeoPixel class
-
 File data_file;  //Create a File object to store all of Protest data 
 
 //change these variables to match the received information from the table sent from arduino 1.
@@ -64,7 +56,7 @@ int stepstaken = 0;               //keeps track of where the stepper motor is
 
 void setup() {
   Serial.begin(9600);
-  serial_arduino.begin(9600);
+  Serial1.begin(9600);
   stepper.setSpeed(300);  //RPM, a high value, because in the code we assume movements are instant.
 
   strip.begin();
@@ -219,8 +211,8 @@ int get_percentage(int response) { //table colums: region,decade,protest,acc,ign
 }
 
 void receive_data() { //reads selection or reset messages and transitions to the appropriate phase
-  if (serial_arduino.available()) {
-    String receivedString = serial_arduino.readStringUntil('\n');  // Read data until newline character
+  if (Serial1.available()) {
+    String receivedString = Serial1.readStringUntil('\n');  // Read data until newline character
     Serial.println("Received: " + receivedString);                 // Print received string for debugging
 
     // if (receivedString.startsWith("RESPOND") && phase = 1) {
