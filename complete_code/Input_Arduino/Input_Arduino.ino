@@ -105,6 +105,7 @@ int pot_value_globe;                                           // variable that 
 
 
 void setup() {
+  Serial.begin(9600);
   Serial1.begin(9600);          //start the Serial communication
   SPI.begin();                 // Initialize SPI bus RFID
   billboard_rfid.PCD_Init();   // Initialize MFRC522 RFID
@@ -135,5 +136,6 @@ void loop() {
   update_selections();                  //the function read all the sensors and update the variables with the new mapped values
   give_feedback_to_user();              //provide feedback to the user with 3 buzzer sound(when a selection is changed) and 3 led (if the selction is correct). 1led and 1 buzzer per input
   communication_to_response_arduino();  //send messages to the response arduino reset=(if a selection is changed) and start=( if the input is valud and the hands are there )
+  // Serial.println(selected_protest[0]);
   delay(10);                            //MAYBE INCREASE IT ? FOR BUZZER SOUND AND RFID READING
 }
