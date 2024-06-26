@@ -3,7 +3,7 @@
 #include <SPI.h>  //SD card reader
 #include <SD.h>   //SD card reader
 #include <Adafruit_NeoPixel.h> //LED Strip
-
+#include <Servo.h> //Flag, poltician
 
 /*
 Reader PIN - Arduino Uno PIN - Arduino Mega PIN
@@ -54,6 +54,7 @@ File datasetFile;  //SD card reader
 DFRobotDFPlayerMini audio_player;  //DF Player
 Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB + NEO_KHZ800); //Inner LED Strip
 
+Servo flag_servo; //Flag
 
 
 bool is_reset_pressed = false;  //check if the reset button is pressed
@@ -77,7 +78,7 @@ void setup() {
   Serial1.begin(9600);
   setup_SD();
   setup_DFPlayer();
-  setup_led_strips();
+  // setup_led_strips();
   setup_stepper_motor();
   setup_fog();
   setup_flag();
