@@ -2,16 +2,27 @@
 
 #include <Servo.h>
 
-Servo politicianServo; 
+#define POLITICIAN_SERVO_PIN 9
+
+Servo politicianServo1;
+// Servo politicianServo2; 
+// Servo politicianServo3; 
 
 int initalServoPos = 0;
 
 void setup() {
   // The servo control wire is connected to Arduino D2 pin.
-  politicianServo.attach(2);
+  politicianServo1.attach(POLITICIAN_SERVO_PIN);
+  //politicianServo2.attach(POLITICIAN_SERVO_PIN);
+  //politicianServo3.attach(POLITICIAN_SERVO_PIN);
+  politicianServo1.write(70);
+  delay(800);
+
+  politicianServo1.write(90);
 }
 
 void loop() {
+
   // // Servo 1
   // // Forward
   // myservo.write(70);
@@ -42,16 +53,16 @@ void loop() {
 
   // Servo 3
   // Forward
-  myservo.write(63);
-  delay(830);
+  // myservo.write(63);
+  // delay(830);
   // Stationary
-  myservo.write(90);
-  delay(1000);
+  // myservo.write(90);
+  // delay(1000);
   // Back
-  myservo.write(122);
-  delay(910);
+  // myservo.write(122);
+  // delay(910);
   // Stationary
-  myservo.write(90);
-  delay(2000);
+  // myservo.write(90);
+  // delay(2000);
 
 }
