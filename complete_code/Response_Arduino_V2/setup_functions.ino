@@ -49,6 +49,7 @@ void setup_fog() {
 
 void setup_flag() {
   pinMode(SERVO_FLAG_PIN, OUTPUT);
+  flag_servo.write(90);
 }
 
 void setup_politician() {
