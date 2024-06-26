@@ -1,5 +1,3 @@
-// This is a basic script. It should not be included in the final project, but offers the right values for politican servos.
-
 #include <Servo.h>
 
 #define SERVO_POLITICIAN_A_PIN 4
@@ -10,77 +8,72 @@ Servo politicianServo1;
 Servo politicianServo2;
 Servo politicianServo3;
 
-int servo_spin = 1;
+enum ServoState {
+  MOVE_OUT,
+  STOPPED,
+  MOVE_IN,
+  FINAL_STOP
+};
+
+ServoState currentState = MOVE_OUT; // Initial state
+unsigned long previousMillis = 0;   // Last time update
+int servoSpin = 1;
 
 void setup() {
-  // The servo control wire is connected to Arduino D2 pin.
   politicianServo1.attach(SERVO_POLITICIAN_A_PIN);
   politicianServo2.attach(SERVO_POLITICIAN_B_PIN);
   politicianServo3.attach(SERVO_POLITICIAN_C_PIN);
+  Serial.begin(9600);
 }
 
 void loop() {
-  while (servo_spin == 1) {
-    politicianServo1.write(60);
-    politicianServo2.write(60);
-    politicianServo3.write(60);
-    delay(700);
-
-    politicianServo1.write(90);
-    politicianServo2.write(90);
-    politicianServo3.write(90);
-    delay(1000);
-
-    politicianServo1.write(120);
-    politicianServo2.write(120);
-    politicianServo3.write(120);
-    delay(2000);
-
-    politicianServo1.write(90);
-    politicianServo2.write(90);
-    politicianServo3.write(90);
-
-    servo_spin = 0;
+  if (servoSpin == 1) {
+    servoControl();
   }
-  // // Servo 1
-  // // Forward
-  // myservo.write(70);
-  // delay(800);
-  // // Stationary
-  // myservo.write(90);
-  // delay(1000);
-  // // Back
-  // myservo.write(115);
-  // delay(880);
-  // // Stationary
-  // myservo.write(90);
-  // delay(1000);
+}
 
-  // // Servo 2
-  // // Forward
-  // myservo.write(65);
-  // delay(840);
-  // // Stationary
-  // myservo.write(90);
-  // delay(1000);
-  // // Back
-  // myservo.write(121);
-  // delay(890);
-  // // Stationary
-  // myservo.write(90);
-  // delay(2000);
+void servoControl() {
+  unsigned long currentMillis = millis();
 
-  // Servo 3
-  // Forward
-  // myservo.write(63);
-  // delay(830);
-  // Stationary
-  // myservo.write(90);
-  // delay(1000);
-  // Back
-  // myservo.write(122);
-  // delay(910);
-  // Stationary
-  // myservo.write(90);
-  // delay(2000);
+  switch (currentState) {
+    case MOVE_OUT:
+      politicianServo1.write(60);
+      politicianServo2.write(60);
+      politicianServo3.write(60);
+      if (currentMillis - previousMillis >= 700) {
+        currentState = STOPPED;
+        previousMillis = currentMillis;
+        // Stop the puppets
+        politicianServo1.write(90);
+        politicianServo2.write(90);
+        politicianServo3.write(90);
+      }
+      break;
+
+    case STOPPED:
+      if (currentMillis - previousMillis >= 1000) {
+        currentState = MOVE_IN;
+        previousMillis = currentMillis;
+        // Move the puppets back in
+        politicianServo1.write(120);
+        politicianServo2.write(120);
+        politicianServo3.write(120);
+      }
+      break;
+
+    case MOVE_IN:
+      if (currentMillis - previousMillis >= 2000) {
+        currentState = FINAL_STOP;
+        previousMillis = currentMillis;
+        // Stop the puppets at their original positions
+        politicianServo1.write(90);
+        politicianServo2.write(90);
+        politicianServo3.write(90);
+      }
+      break;
+
+    case FINAL_STOP:
+      servoSpin = 0; // End the operation
+      break;
+  }
 }
