@@ -116,55 +116,50 @@ void loop() {
 void response() {
   Serial.print("response_index" + String(response_switch_index));
   Serial.println("player boolean:" + String(is_audio_player_running));
-  switch (response_switch_index) {
-    case 0:  //convert datas to percentages
-      Serial.println("case 0");
-      get_response_percentages();
-      Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
-      response_switch_index++;
-      break;
-    case 1:  //play the confirmation audio
-      Serial.println("case 1");
-      int number_of_audios = 4;
-      // Serial.println("num of audios" + String(number_of_audios));
-      // Serial.println("current audio index" + String(current_audio_index));
-      if (current_audio_index < number_of_audios) {
-        // Serial.println("player boolean:" + String(is_audio_player_running));
-        if (!is_audio_player_running) {
-          // Serial.println("play sound");
-          play_selection_voiceover();
-          current_audio_index++;
-        }
-      } else {
-        Serial.println("case 1 last");
-        response_switch_index++;
-        current_audio_index = 0;
+  if (response_switch_index == 0) {
+    Serial.println("case 0");
+    get_response_percentages();
+    Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+    response_switch_index++;
+  } else if (response_switch_index == 1) {
+    Serial.println("case 1");
+    int number_of_audios = 4;
+    // Serial.println("num of audios" + String(number_of_audios));
+    // Serial.println("current audio index" + String(current_audio_index));
+    if (current_audio_index < number_of_audios) {
+      // Serial.println("player boolean:" + String(is_audio_player_running));
+      if (!is_audio_player_running) {
+        // Serial.println("play sound");
+        play_selection_voiceover();
+        current_audio_index++;
       }
-      break;
-    case 2:  //do the accomodation
-      Serial.println("case 2");
-      // accomodate_response();
-      // Serial.println("herere");
+    } else {
+      Serial.println("case 1 last");
       response_switch_index++;
-      break;
-    case 3:
-      // ignore_response();
-      response_switch_index++;
-      break;
-    case 4:
-      // dispersal_response();
-      response_switch_index++;
-      // break;
-    case 5:
-      // arrest_response();
-      response_switch_index++;
-      // break;
-    case 6:
-      // violence_response();
-      response_switch_index++;
-      break;
-    default:
-      Serial.println("fuker");
-      break;
+      current_audio_index = 0;
+    }
+  } else if (response_switch_index == 2) {
+    Serial.println("case 2");
+    // accomodate_response();
+    // Serial.println("herere");
+    response_switch_index++;
+  } else if (response_switch_index == 3) {
+    Serial.println("case 3");
+    // ignore_response();
+    response_switch_index++;
+  } else if (response_switch_index == 4) {
+    Serial.println("case 4");
+    // dispersal_response();
+    response_switch_index++;
+  } else if (response_switch_index == 5) {
+    Serial.println("case 5");
+    // arrest_response();
+    response_switch_index++;
+  } else if (response_switch_index == 6) {
+    Serial.println("case 6");
+    // violence_response();
+    response_switch_index++;
+  } else {
+    Serial.println("fucker");
   }
 }
