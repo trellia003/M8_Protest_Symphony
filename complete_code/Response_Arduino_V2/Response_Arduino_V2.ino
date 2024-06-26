@@ -2,6 +2,7 @@
 
 #include <SPI.h>  //SD card reader
 #include <SD.h>   //SD card reader
+#include <Adafruit_NeoPixel.h> //LED Strip
 
 
 /*
@@ -44,11 +45,14 @@ CS         - 10              - 53
 
 #define SERVO_NET_PIN 11
 
-
+//Number of LEDs of each strip
+#define NUM_LEDS_INNER 240
+#define NUM_LEDS_OUTER 
 
 
 File datasetFile;  //SD card reader
-DFRobotDFPlayerMini audio_player;
+DFRobotDFPlayerMini audio_player;  //DF Player
+Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB + NEO_KHZ800); //Inner LED Strip
 
 
 
@@ -65,7 +69,7 @@ int violence_percentage = 0;
 
 int response_switch_index = 0;
 
-
+int percentage_revealed = 0;
 
 
 void setup() {
