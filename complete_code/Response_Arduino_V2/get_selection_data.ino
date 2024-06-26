@@ -1,6 +1,6 @@
 // the idea is that the string should be splitted into parts by the ","
-// the first part should be "START", 
-// and than all the other parts are splitter by ":" 
+// the first part should be "START",
+// and than all the other parts are splitter by ":"
 // the value after the ":" is assigned based on the letter before the ":"
 
 
@@ -52,11 +52,11 @@ void processPart(String part) {
 
     // Assign values based on the key
     if (key == "D") {
-      decade_selection_value = value.toInt();
+      add_new_value_decade(value.toInt());
     } else if (key == "R") {
-      region_selection_value = value.toInt();
+      add_new_value_region(value.toInt());
     } else if (key == "P") {
-      protest_selection_value = value.toInt();
+      add_new_value_protest(value.toInt());
     }
   }
 }

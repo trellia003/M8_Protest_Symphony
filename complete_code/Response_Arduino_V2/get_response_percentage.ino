@@ -1,5 +1,8 @@
 void get_response_percentages() {
+  // Serial.println("get_response");
+  openFile("protest.csv");
   while (datasetFile.available()) {
+    // Serial.println("available");
     String line = datasetFile.readStringUntil('\n');
     processLine(line);
   }
@@ -7,6 +10,7 @@ void get_response_percentages() {
 }
 
 void processLine(String line) {
+  // Serial.println(line);
   int colIndex = 0;
   int col4 = -1, col5 = -1, col6 = -1, col7 = -1, col8 = -1;
   bool match = true;
@@ -17,13 +21,14 @@ void processLine(String line) {
       line = line.substring(i + 1);
       i = -1;  // reset the index to start from the next character
 
-      if (colIndex == 0 && value.toInt() != region_selection_value) {
+      if (colIndex == 0 && value.toInt() != region_selection_value[0]) {
+        // Serial.println("selectionregion" + String(region_selection_value));
         match = false;
         break;
-      } else if (colIndex == 1 && value.toInt() != decade_selection_value) {
+      } else if (colIndex == 1 && value.toInt() != decade_selection_value[0]) {
         match = false;
         break;
-      } else if (colIndex == 2 && value.toInt() != protest_selection_value) {
+      } else if (colIndex == 2 && value.toInt() != protest_selection_value[0]) {
         match = false;
         break;
       } else if (colIndex == 3) {
@@ -38,10 +43,11 @@ void processLine(String line) {
         col8 = value.toInt();
         break;  // No need to continue after the last required column
       }
-
+      delay(2);
       colIndex++;
     }
   }
+  // Serial.println(match);
 
   if (match) {
     accomodation_percentage = col4;
@@ -51,14 +57,27 @@ void processLine(String line) {
     violence_percentage = col8;
 
     // Serial.print("Accomodate: ");
-    // Serial.print(accomodatePercent);
+    // Serial.print(accomodation_percentage);
     // Serial.print(", Ignore: ");
-    // Serial.print(ignorePercent);
+    // Serial.print(ignore_percentage);
     // Serial.print(", Disperse: ");
-    // Serial.print(dispersePercent);
+    // Serial.print(dispersal_percentage);
     // Serial.print(", Arrest: ");
-    // Serial.print(arrestPercent);
+    // Serial.print(arrest_percentage);
     // Serial.print(", Violence: ");
-    // Serial.println(violencePercent);
+    // Serial.println(violence_percentage);
+  }
+}
+
+
+
+int openFile(char filename[]) {
+  datasetFile = SD.open(filename);
+  if (datasetFile) {
+    Serial.println("File opened successfully!");
+    return 1;
+  } else {
+    Serial.println("Error opening file...");
+    return 0;
   }
 }

@@ -10,14 +10,3 @@ void initializeSD() {
   }
 }
 
-
-int openFile(char filename[]) {
-  datasetFile = SD.open(filename);
-  if (datasetFile) {
-    Serial.println("File opened successfully!");
-    return 1;
-  } else {
-    Serial.println("Error opening file...");
-    return 0;
-  }
-}

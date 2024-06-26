@@ -24,10 +24,10 @@ File datasetFile;  //SD card reader
 
 
 
-bool is_reset_pressed = false;
-int decade_selection_value = 0;
-int region_selection_value = 0;
-int protest_selection_value = 0;
+bool is_reset_pressed = false;  //check if the reset button is pressed
+int decade_selection_value[] = { 0, 0 };
+int region_selection_value[] = { 0, 0 }; //not sure about the array , maybe only simply int
+int protest_selection_value[] = { 0, 0 };
 
 int accomodation_percentage = 0;
 int ignore_percentage = 0;
@@ -35,21 +35,37 @@ int dispersal_percentage = 0;
 int arrest_percentage = 0;
 int violence_percentage = 0;
 
+int response_switch_index = 0;
 
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
   initializeSD();
-  openFile("protest.csv");
 }
 
 void loop() {
   get_selection_data();
+
+  // if (are_all_selection_value_valid() && is_any_selection_different()) {
+  //   get_response_percentages();
+  //   Serial.print("selection:" + String(decade_selection_value[0]) + ":" + String(region_selection_value[0]) + ":" + String(protest_selection_value[0]));
+  //   Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+  // }
+
   if (is_reset_pressed) {
     reset_installation();
-  } else if (are_all_selection_value_valid()) {
-    get_response_percentages();  //this runs every time, but we actually only need it to run when the selection are different from the preious, not a big deal
-    Serial.print("selection:" + String(decade_selection_value) + ":" + String(region_selection_value) + ":" + String(protest_selection_value));
-    Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+  } else if (are_all_selection_valid()) {
+    switch (response_switch_index) {
+      case 0:
+        get_response_percentages();
+        Serial.print("selection:" + String(decade_selection_value[0]) + ":" + String(region_selection_value[0]) + ":" + String(protest_selection_value[0]));
+        Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+        response_switch_index++;
+        break;
+      case 1:
+
+        break;
+    }
   }
+  delay(10);
 }
