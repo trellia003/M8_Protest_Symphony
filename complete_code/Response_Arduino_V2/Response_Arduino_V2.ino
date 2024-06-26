@@ -17,7 +17,32 @@ CS         - 10              - 53
 */
 #define DATA_SD_CS_PIN 53  // Change this to the pin used for SD card module
 
+#define BUSY_PIN_DFPLAYER_PIN 47 //busy pin of the dfplayer to check if the sound is playing
 
+#define LED_INNER_STRIP_PIN 43
+#define LED_OUTER_STRIP_PIN 42
+
+#define SREPPER_MOTOR_ENA_PIN 39
+#define SREPPER_MOTOR_IN1_PIN 37
+#define SREPPER_MOTOR_IN2_PIN 35
+#define SREPPER_MOTOR_IN3_PIN 33
+#define SREPPER_MOTOR_IN4_PIN 31 
+#define SREPPER_MOTOR_ENB_PIN 29
+
+#define FOG_PIN 2
+
+#define SERVO_FLAG_PIN 3
+#define SERVO_POLITICIAN_A_PIN 4
+#define SERVO_POLITICIAN_B_PIN 5 
+#define SERVO_POLITICIAN_C_PIN 6
+
+//CONVENTION: 1 IS THE INNER SERVO(smaller circle) AND 4 IS THE OUTER(bigger circle)
+#define SERVO_PUPPETS_1_PIN 7
+#define SERVO_PUPPETS_2_PIN 8
+#define SERVO_PUPPETS_3_PIN 9 
+#define SERVO_PUPPETS_4_PIN 10
+
+#define SERVO_NET_PIN 11
 
 File datasetFile;  //SD card reader
 
