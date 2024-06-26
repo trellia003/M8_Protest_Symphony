@@ -33,7 +33,7 @@ void set_section_color(int start, int end, uint32_t color) {
 
 //function to set Color for the whole strip 
 void set_all_color(uint32_t color) {
-  for (int i = 0; i < NUM_LEDS; i++) {
+  for (int i = 0; i < NUM_LEDS_INNER; i++) {
     inner_LED_strip.setPixelColor(i, color);
   }
 }

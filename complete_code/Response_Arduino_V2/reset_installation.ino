@@ -12,6 +12,10 @@ void restore_default_values() {
   restore_selections();
   restore_percentages();
   restore_switch_index();
+  restore_current_audio_index();
+}
+void restore_current_audio_index() {
+  current_audio_index = 0;
 }
 
 void restore_switch_index() {
@@ -26,7 +30,7 @@ void restore_saved_selections() {
   region_selection_value[1] = 0;
   protest_selection_value[1] = 0;
 }
-void restore_selections(){
+void restore_selections() {
   decade_selection_value[0] = 0;
   region_selection_value[0] = 0;
   protest_selection_value[0] = 0;
@@ -38,4 +42,3 @@ void restore_percentages() {
   arrest_percentage = 0;
   violence_percentage = 0;
 }
-
