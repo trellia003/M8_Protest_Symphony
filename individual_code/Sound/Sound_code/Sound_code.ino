@@ -106,7 +106,7 @@ int playResponseSound(int response) {
   }
 }
 
-int playSelectionVoiceOver(int region, int decade, int protest) {
+void playSelectionVoiceOver(int region, int decade, int protest) {
   playVoiceOverBegin();
   delay(5000);
   playSelectionRegion(region);
