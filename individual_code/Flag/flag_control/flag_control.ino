@@ -3,8 +3,8 @@
 #define FLAG_SERVO_PIN 9
 #define FLAG_FAN_PIN 8
 
-Servo flagServo;  // Create a Servo object
-int flagRaise = 1; //Signal to raise the flag
+Servo flagServo;    // Create a Servo object
+int flagRaise = 1;  //Signal to raise the flag
 
 enum FlagState {
   RAISE_FLAG,
@@ -13,8 +13,8 @@ enum FlagState {
   FLAG_LOWERED
 };
 
-FlagState flagState = RAISE_FLAG; // Start by raising the flag
-unsigned long flag_previousMillis = 0; // Stores the last time the flag state was updated
+FlagState flagState = RAISE_FLAG;       // Start by raising the flag
+unsigned long flag_previousMillis = 0;  // Stores the last time the flag state was updated
 
 void setup() {
   flagServo.attach(FLAG_SERVO_PIN);  // Attach the ATS90M 360 servo to pin 9
@@ -23,14 +23,14 @@ void setup() {
 void loop() {
   while (flagRaise == 1) {
     flag_servo_control();
-    flagRaise = 0; //set to 0 to stop the flag
+    flagRaise = 0;  //set to 0 to stop the flag
   }
 }
 
 void flag_servo_control() {
   unsigned long flag_currentMillis = millis();
 
-  switch(flagState) {
+  switch (flagState) {
     case RAISE_FLAG:
       flag_servo.write(180);
       if (flag_currentMillis - flag_previousMillis >= 700) {  // Servo spin time
@@ -41,7 +41,7 @@ void flag_servo_control() {
       break;
 
     case FLAG_RAISED:
-      if (currentMillis - flag_previousMillis >= 5000) { // Flag stay up time
+      if (currentMillis - flag_previousMillis >= 5000) {  // Flag stay up time
         flagState = LOWER_FLAG;
         flag_previousMillis = flag_currentMillis;
       }
