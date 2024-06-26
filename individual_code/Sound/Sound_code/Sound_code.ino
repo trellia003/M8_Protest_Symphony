@@ -4,10 +4,10 @@
 #include "SoftwareSerial.h"
 #include "DFRobotDFPlayerMini.h"
 
-
-#define SOUND_DFP_TX_PIN 11   // Digital 11  connected with 1k ohm to pin 2 DFPlayer
-#define SOUND_DFP_RX_PIN 10   // Digital 10  connected to pin 3 of DFPlayer
-#define SOUND_CONTROL_PIN 12  // used to check if the dfplayer is running
+//Arduino Mega pin
+#define SOUND_DFP_TX_PIN 3   // Digital 11  connected with 1k ohm to pin 2 DFPlayer
+#define SOUND_DFP_RX_PIN 2   // Digital 10  connected to pin 3 of DFPlayer
+#define SOUND_CONTROL_PIN 49  // used to check if the dfplayer is running
 
 
 SoftwareSerial softwareSerial(SOUND_DFP_RX_PIN, SOUND_DFP_TX_PIN);
