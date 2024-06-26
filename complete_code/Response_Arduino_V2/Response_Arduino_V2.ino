@@ -55,6 +55,9 @@ DFRobotDFPlayerMini audio_player;                                               
 Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB + NEO_KHZ800);  //Inner LED Strip
 
 Servo flag_servo;  //Flag
+Servo politician_servo_1;
+Servo politician_servo_2; //Politician
+Servo politician_servo_3;
 
 
 bool is_reset_pressed = false;  //check if the reset button is pressed
@@ -74,6 +77,9 @@ int percentage_revealed = 0;  //this is not in reset now
 
 bool is_audio_player_running = false;
 int current_audio_index = 0;
+
+int flag_raise = 1;
+int politician_spin = 1;
 
 
 void setup() {

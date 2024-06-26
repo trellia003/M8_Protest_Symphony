@@ -1,8 +1,8 @@
 #include <Servo.h>
 
-#define SERVO_POLITICIAN_A_PIN 4
-#define SERVO_POLITICIAN_B_PIN 5
-#define SERVO_POLITICIAN_C_PIN 6
+#define SERVO_POLITICIAN_A_PIN 9
+#define SERVO_POLITICIAN_B_PIN 10
+#define SERVO_POLITICIAN_C_PIN 11
 
 Servo politicianServo1;
 Servo politicianServo2;
