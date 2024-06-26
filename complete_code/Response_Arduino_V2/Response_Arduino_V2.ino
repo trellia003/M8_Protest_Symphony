@@ -50,7 +50,7 @@ CS         - 10              - 53
 #define NUM_LEDS_OUTER
 
 
-  File datasetFile;                                                                            //SD card reader
+File datasetFile;                                                                              //SD card reader
 DFRobotDFPlayerMini audio_player;                                                              //DF Player
 Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB + NEO_KHZ800);  //Inner LED Strip
 
@@ -109,23 +109,24 @@ void loop() {
     // Serial.println("saved selections");
     save_selection_values();
   }
-  delay(300);
+  delay(400);
 }
 
 
 void response() {
-  // Serial.println("response_index" + String(response_switch_index));
+  Serial.print("response_index" + String(response_switch_index));
+  Serial.println("player boolean:" + String(is_audio_player_running));
   switch (response_switch_index) {
-    case 0:
+    case 0:  //convert datas to percentages
       get_response_percentages();
       // Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
       response_switch_index++;
       break;
-    case 1:
+    case 1:  //play the confirmation audio
       int number_of_audios = 4;
       // Serial.println("num of audios" + String(number_of_audios));
       // Serial.println("current audio index" + String(current_audio_index));
-      if (current_audio_index <= number_of_audios) {
+      if (current_audio_index < number_of_audios) {
         // Serial.println("player boolean:" + String(is_audio_player_running));
         if (!is_audio_player_running) {
           // Serial.println("play sound");
@@ -137,20 +138,26 @@ void response() {
         current_audio_index = 0;
       }
       break;
-    case 2:
-      //accomodate
+    case 2:  //do the accomodation
+      // accomodate_response();
+      Serial.println("herere");
+      response_switch_index++;
       break;
     case 3:
-      //ignore
+      ignore_response();
+      response_switch_index++;
       break;
     case 4:
-      //disperse
-      break;
+      dispersal_response();
+      response_switch_index++;
+      // break;
     case 5:
-      //arrest
-      break;
+      arrest_response();
+      response_switch_index++;
+      // break;
     case 6:
-      // violence
-      break;
+      violence_response();
+      response_switch_index++;
+      // break;
   }
 }
