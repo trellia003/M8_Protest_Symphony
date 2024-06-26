@@ -13,19 +13,20 @@ void setup_SD() {
 void setup_DFPlayer() {
   pinMode(BUSY_PIN_DFPLAYER_PIN, INPUT);
   Serial2.begin(9600);
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
   // Serial.println();
   // Serial.println(F("DFRobot DFPlayer Mini Demo"));
   Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
 
   if (!audio_player.begin(Serial2)) {  //Use softwareSerial to communicate with mp3.
-    Serial.println(F("Unable to begin:"));
+    Serial.println(F("DFplayer Unable to begin:"));
     // Serial.println(F("1.Please recheck the connection!"));
     // Serial.println(F("2.Please insert the SD card!"));
+  } else {
+    Serial.println(F("DFPlayer Mini online."));
   }
-  Serial.println(F("DFPlayer Mini online."));
-  audio_player.volume(30);  //Set volume value. From 0 to 30
+  audio_player.volume(24);  //Set volume value. From 0 to 30
 }
 
 void setup_led_strips() {

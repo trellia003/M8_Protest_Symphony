@@ -52,11 +52,14 @@ void processPart(String part) {
 
     // Assign values based on the key
     if (key == "D") {
-      add_new_value_decade(value.toInt());
+      // add_new_value_decade(value.toInt());
+      decade_selection_value[0] = value.toInt();
     } else if (key == "R") {
-      add_new_value_region(value.toInt());
+      // add_new_value_region(value.toInt());
+      region_selection_value[0] = value.toInt();
     } else if (key == "P") {
-      add_new_value_protest(value.toInt());
+      // add_new_value_protest(value.toInt());
+      protest_selection_value[0] = value.toInt();
     }
   }
 }

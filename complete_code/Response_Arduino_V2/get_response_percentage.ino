@@ -21,14 +21,14 @@ void processLine(String line) {
       line = line.substring(i + 1);
       i = -1;  // reset the index to start from the next character
 
-      if (colIndex == 0 && value.toInt() != region_selection_value[0]) {
+      if (colIndex == 0 && value.toInt() != region_selection_value[1]) {
         // Serial.println("selectionregion" + String(region_selection_value));
         match = false;
         break;
-      } else if (colIndex == 1 && value.toInt() != decade_selection_value[0]) {
+      } else if (colIndex == 1 && value.toInt() != decade_selection_value[1]) {
         match = false;
         break;
-      } else if (colIndex == 2 && value.toInt() != protest_selection_value[0]) {
+      } else if (colIndex == 2 && value.toInt() != protest_selection_value[1]) {
         match = false;
         break;
       } else if (colIndex == 3) {

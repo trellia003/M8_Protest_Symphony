@@ -1,8 +1,7 @@
-
-
-#include <SPI.h>  //SD card reader
-#include <SD.h>   //SD card reader
-#include <Adafruit_NeoPixel.h> //LED Strip
+#include <SPI.h>                //SD card reader
+#include <SD.h>                 //SD card reader
+#include <Adafruit_NeoPixel.h>  //LED Strip
+#include <DFRobotDFPlayerMini.h>
 
 
 /*
@@ -47,18 +46,18 @@ CS         - 10              - 53
 
 //Number of LEDs of each strip
 #define NUM_LEDS_INNER 240
-#define NUM_LEDS_OUTER 
+#define NUM_LEDS_OUTER
 
 
-File datasetFile;  //SD card reader
-DFRobotDFPlayerMini audio_player;  //DF Player
-Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB + NEO_KHZ800); //Inner LED Strip
+File datasetFile;                                                                              //SD card reader
+DFRobotDFPlayerMini audio_player;                                                              //DF Player
+Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB + NEO_KHZ800);  //Inner LED Strip
 
 
 
 bool is_reset_pressed = false;  //check if the reset button is pressed
 int decade_selection_value[] = { 0, 0 };
-int region_selection_value[] = { 0, 0 };  //not sure about the array , maybe only simply int
+int region_selection_value[] = { 0, 0 };  //first value is the readed one, second value is the one locked during the installation
 int protest_selection_value[] = { 0, 0 };
 
 int accomodation_percentage = 0;
@@ -70,6 +69,9 @@ int violence_percentage = 0;
 int response_switch_index = 0;
 
 int percentage_revealed = 0;
+
+bool is_audio_player_running = false;
+int current_audio_index = 0;
 
 
 void setup() {
@@ -89,33 +91,64 @@ void setup() {
 
 
 void loop() {
-  get_selection_data();
-  if (is_reset_pressed) {
+
+  // Serial.println("saved" + String(decade_selection_value[1]) + String(region_selection_value[1]) + String(protest_selection_value[1]));
+  // Serial.println("selection:" + String(decade_selection_value[0]) + ":" + String(region_selection_value[0]) + ":" + String(protest_selection_value[0]));
+
+  get_selection_data();              //alyays listen for new messages and stores them in the index [0] of the decade,region and protest array
+  update_is_audio_player_running();  //always update if the audio player is playing something or not
+  // Serial.println("player boolean:" + String(is_audio_player_running));
+  if (is_reset_pressed) {  //if the reset button is pressed reset
     reset_installation();
-  } else if (are_all_selection_valid()) {
-    switch (response_switch_index) {
-      case 0:
-        get_response_percentages();
-        Serial.print("selection:" + String(decade_selection_value[0]) + ":" + String(region_selection_value[0]) + ":" + String(protest_selection_value[0]));
-        Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
-        response_switch_index++;
-        break;
-      case 1:
-        //accomodate
-        break;
-      case 2:
-        //ignore
-        break;
-      case 3:
-        //disperse
-        break;
-      case 4:
-        //arrest
-        break;
-      case 5:
-        // violence
-        break;
-    }
+  } else if (are_all_saved_selection_valid()) {  //if reset button is not pressed and the saved value are valid, play the response
+    // Serial.println("response");
+    response();
+  } else {  //otherwise if both saved selections and reset buttons are false, we saved the selections
+    // Serial.println("saved selections");
+    save_selection_values();
   }
-  delay(10);
+  delay(300);
+}
+
+
+void response() {
+  // Serial.println("response_index" + String(response_switch_index));
+  switch (response_switch_index) {
+    case 0:
+      get_response_percentages();
+      // Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+      response_switch_index++;
+      break;
+    case 1:
+      int number_of_audios = 4;
+      // Serial.println("num of audios" + String(number_of_audios));
+      // Serial.println("current audio index" + String(current_audio_index));
+      if (current_audio_index <= number_of_audios) {
+        // Serial.println("player boolean:" + String(is_audio_player_running));
+        if (!is_audio_player_running) {
+          // Serial.println("play sound");
+          play_selection_voiceover();
+          current_audio_index++;
+        }
+      } else {
+        response_switch_index++;
+        current_audio_index = 0;
+      }
+      break;
+    case 2:
+      //accomodate
+      break;
+    case 3:
+      //ignore
+      break;
+    case 4:
+      //disperse
+      break;
+    case 5:
+      //arrest
+      break;
+    case 6:
+      // violence
+      break;
+  }
 }
