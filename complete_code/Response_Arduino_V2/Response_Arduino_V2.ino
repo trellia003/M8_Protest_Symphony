@@ -63,7 +63,19 @@ void loop() {
         response_switch_index++;
         break;
       case 1:
-
+        //accomodate
+        break;
+      case 2:
+        //ignore
+        break;
+      case 3:
+        //disperse
+        break;
+      case 4:
+        //arrest
+        break;
+      case 5:
+        // violence
         break;
     }
   }
