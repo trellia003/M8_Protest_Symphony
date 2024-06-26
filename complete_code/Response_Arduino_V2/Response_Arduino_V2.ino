@@ -22,12 +22,12 @@ CS         - 10              - 53
 #define LED_INNER_STRIP_PIN 43
 #define LED_OUTER_STRIP_PIN 42
 
-#define SREPPER_MOTOR_ENA_PIN 39
-#define SREPPER_MOTOR_IN1_PIN 37
-#define SREPPER_MOTOR_IN2_PIN 35
-#define SREPPER_MOTOR_IN3_PIN 33
-#define SREPPER_MOTOR_IN4_PIN 31 
-#define SREPPER_MOTOR_ENB_PIN 29
+#define STEPPER_MOTOR_ENA_PIN 39
+#define STEPPER_MOTOR_IN1_PIN 37
+#define STEPPER_MOTOR_IN2_PIN 35
+#define STEPPER_MOTOR_IN3_PIN 33
+#define STEPPER_MOTOR_IN4_PIN 31 
+#define STEPPER_MOTOR_ENB_PIN 29
 
 #define FOG_PIN 2
 
@@ -43,6 +43,9 @@ CS         - 10              - 53
 #define SERVO_PUPPETS_4_PIN 10
 
 #define SERVO_NET_PIN 11
+
+
+
 
 File datasetFile;  //SD card reader
 DFRobotDFPlayerMini audio_player;
@@ -62,21 +65,19 @@ int violence_percentage = 0;
 
 int response_switch_index = 0;
 
+
+
+
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
   initializeSD();
 }
 
+
+
 void loop() {
   get_selection_data();
-
-  // if (are_all_selection_value_valid() && is_any_selection_different()) {
-  //   get_response_percentages();
-  //   Serial.print("selection:" + String(decade_selection_value[0]) + ":" + String(region_selection_value[0]) + ":" + String(protest_selection_value[0]));
-  //   Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
-  // }
-
   if (is_reset_pressed) {
     reset_installation();
   } else if (are_all_selection_valid()) {
