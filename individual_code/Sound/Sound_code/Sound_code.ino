@@ -5,33 +5,65 @@
 #include "DFRobotDFPlayerMini.h"
 
 //Arduino Mega pin
-#define SOUND_DFP_TX_PIN 3   // Digital 11  connected with 1k ohm to pin 2 DFPlayer
-#define SOUND_DFP_RX_PIN 2   // Digital 10  connected to pin 3 of DFPlayer
+//#define SOUND_DFP_TX_PIN 13   // Digital 3 connected with 1k ohm to pin 2 DFPlayer
+//#define SOUND_DFP_RX_PIN 12   // Digital 2 connected to pin 3 of DFPlayer
 #define SOUND_CONTROL_PIN 49  // used to check if the dfplayer is running
 
 
-SoftwareSerial softwareSerial(SOUND_DFP_RX_PIN, SOUND_DFP_TX_PIN);
+//SoftwareSerial softwareSerial(SOUND_DFP_RX_PIN, SOUND_DFP_TX_PIN);
 
 // Create the Player object
 DFRobotDFPlayerMini player;
-void printDetail(uint8_t type, int value);
+//void printDetail(uint8_t type, int value);
 
+
+// void setup() {
+//   pinMode(SOUND_CONTROL_PIN, INPUT);
+//   Serial.begin(9600);
+//   softwareSerial.begin(9600);
+
+//   if (player.begin(softwareSerial)) {
+//     Serial.println("DFPlayer Mini is ready.");
+//     player.volume(30);  // Set volume value. Change 30 to a different value to test volume control.
+//     Serial.println("Volume set to 30.");
+//   } else {
+//     Serial.println("Connecting to DFPlayer Mini failed!");
+//     int error = player.readState(); // Reads the state of the player
+//     Serial.print("Error Code: ");
+//     Serial.println(error);
+//   }
+// }
 
 void setup() {
   pinMode(SOUND_CONTROL_PIN, INPUT);
+  Serial1.begin(9600);
   Serial.begin(9600);
-  softwareSerial.begin(9600);
-  if (player.begin(softwareSerial)) {
-    player.volume(30);
-  } else {
-    Serial.println("Connecting to DFPlayer Mini failed!");
+
+  Serial.println();
+  Serial.println(F("DFRobot DFPlayer Mini Demo"));
+  Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
+
+  if (!player.begin(Serial1)) {  //Use softwareSerial to communicate with mp3.
+    Serial.println(F("Unable to begin:"));
+    Serial.println(F("1.Please recheck the connection!"));
+    Serial.println(F("2.Please insert the SD card!"));
+    while (true) {
+      delay(0);  // Code to compatible with ESP8266 watch dog.
+    }
   }
+  Serial.println(F("DFPlayer Mini online."));
+
+  player.volume(30);  //Set volume value. From 0 to 30
+  //player.play(1);     //Play the first mp3
 }
+
+
 
 void loop() {
   delay(3000);
-  playResponseSound(5);
-  //playSelectionVoiceOver(1, 1, 1);
+  //player.playFolder(1, 1);
+  playResponseSound(3);
+  //playSelectionVoiceOver(3, 3, 3);
   /*
   delay(5000);
   playTheSound(2);
@@ -47,26 +79,26 @@ void loop() {
 
 int playResponseSound(int response) {
   bool isPlayerRunning;
-  isPlayerRunning =! digitalRead(SOUND_CONTROL_PIN);
+  isPlayerRunning = !digitalRead(SOUND_CONTROL_PIN);
   if (!isPlayerRunning) {
     switch (response) {
-      case 1:          // accomodate
-        player.playFolder(1, 1);  
+      case 1:  // accomodate
+        player.playFolder(1, 1);
         Serial.println("cheering");
         return 1;
-      case 2:         // ignore
-        player.playFolder(1, 2); 
+      case 2:  // ignore
+        player.playFolder(1, 2);
         Serial.println("crikets");
         return 1;
-      case 3:        // disperse
+      case 3:  // disperse
         player.playFolder(1, 3);
         Serial.println("booing");
         return 1;
-      case 4:        // arrest
+      case 4:  // arrest
         player.playFolder(1, 4);
-        Serial.println("police"); 
+        Serial.println("police");
         return 1;
-      case 5:       // violence
+      case 5:  // violence
         player.playFolder(1, 5);
         Serial.println("gunfire");
         return 1;
@@ -89,7 +121,7 @@ int playSelectionVoiceOver(int region, int decade, int protest) {
 
 void playVoiceOverBegin() {
   bool isPlayerRunning;
-  isPlayerRunning =! digitalRead(SOUND_CONTROL_PIN);
+  isPlayerRunning = !digitalRead(SOUND_CONTROL_PIN);
   if (!isPlayerRunning) {
     player.playFolder(2, 1);
     Serial.println("begin");
@@ -100,14 +132,14 @@ void playVoiceOverBegin() {
 
 void playSelectionRegion(int region) {
   bool isPlayerRunning;
-  isPlayerRunning =! digitalRead(SOUND_CONTROL_PIN);
+  isPlayerRunning = !digitalRead(SOUND_CONTROL_PIN);
   if (!isPlayerRunning) {
     switch (region) {
       case 1:
         player.playFolder(2, 11);
         Serial.println("europe");
         break;
-      case 2: 
+      case 2:
         player.playFolder(2, 12);
         Serial.println("asia");
         break;
@@ -123,14 +155,14 @@ void playSelectionRegion(int region) {
 
 void playSelectionDecade(int decade) {
   bool isPlayerRunning;
-  isPlayerRunning =! digitalRead(SOUND_CONTROL_PIN);
+  isPlayerRunning = !digitalRead(SOUND_CONTROL_PIN);
   if (!isPlayerRunning) {
-    switch(decade) {
+    switch (decade) {
       case 1:
         player.playFolder(2, 21);
         Serial.println("1990");
         break;
-      case 2: 
+      case 2:
         player.playFolder(2, 22);
         Serial.println("2000");
         break;
@@ -146,14 +178,14 @@ void playSelectionDecade(int decade) {
 
 void playSelectionProtest(int protest) {
   bool isPlayerRunning;
-  isPlayerRunning =! digitalRead(SOUND_CONTROL_PIN);
+  isPlayerRunning = !digitalRead(SOUND_CONTROL_PIN);
   if (!isPlayerRunning) {
-    switch(protest) {
+    switch (protest) {
       case 1:
         player.playFolder(2, 31);
         Serial.println("political");
         break;
-      case 2: 
+      case 2:
         player.playFolder(2, 32);
         Serial.println("wage");
         break;
