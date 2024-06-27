@@ -142,23 +142,23 @@ void response() {
     get_response_percentages();
     // Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
   } else if (response_switch_index == 1) {
-    Serial.println("case 1");
+    // Serial.println("case 1");
     confermation_voiceover_sound();
   } else if (response_switch_index == 2) {
-    Serial.println("case 2");
+    // Serial.println("case 2");
     accomodate_response();
   } else if (response_switch_index == 3) {
     stop_flag_servo();
-    Serial.println("case 3");
+    // Serial.println("case 3");
     ignore_response();
   } else if (response_switch_index == 4) {
-    Serial.println("case 4");
+    // Serial.println("case 4");
     dispersal_response();
   } else if (response_switch_index == 5) {
-    Serial.println("case 5");
+    // Serial.println("case 5");
     arrest_response();
   } else if (response_switch_index == 6) {
-    Serial.println("case 6");
+    // Serial.println("case 6");
     violence_response();
   } else {
     Serial.println("fucker, let me be, i'm in standby!");

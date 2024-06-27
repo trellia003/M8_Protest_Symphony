@@ -19,8 +19,8 @@ void communication_to_response_arduino() {
   if (are_all_hands_placed_state[0] != are_all_hands_placed_state[1]) {
     if (are_all_hands_placed_state[0]) {
       if (are_all_selection_valid()) {
-        Serial1.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
-        Serial.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
+        Serial1.println("START,D:" + String(selected_decade[0]) + ",R:" + String(selected_region[0]) + ",P:" + String(selected_protest[0]));
+        Serial.println("START,D:" + String(selected_decade[0]) + ",R:" + String(selected_region[0]) + ",P:" + String(selected_protest[0]));
       }
     } else {
       //hands released

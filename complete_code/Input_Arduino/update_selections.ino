@@ -33,13 +33,13 @@ int get_decade() {
   average = decade_potentiomiter_total / arrayLength;                                           // Calculate the average
 
   int decade = 0;
-  if (120 <= average && average <= 280) {
+  if (650 <= average && average <= 930) {
     decade = 3;  //2010
     // Serial.println("3: 2010");
-  } else if (360 <= average && average <= 560) {
+  } else if (365 <= average && average <= 610) {
     decade = 2;  //2000
     // Serial.println("2: 2000");
-  } else if (660 <= average && average <= 820) {
+  } else if (35 <= average && average <= 300) {
     decade = 1;  //1990
     // Serial.println("1: 1990");
   }

@@ -1,6 +1,23 @@
 void reset_installation() {
   // delay(1000);
-  set_all_color((255,255,255));
+  reset_LED();
+  current_audio_index = 0;
+  has_run_once_every_response = false;
+
+  flag_servo.write(0);
+
+  delay(1000);
+  flag_servo.write(90);
+
+  politician_servo_1.write(120);
+  politician_servo_2.write(120);
+  politician_servo_3.write(120);
+  delay(2000);
+  politician_servo_1.write(90);
+  politician_servo_2.write(90);
+  politician_servo_3.write(90);
+
+  digitalWrite(FOG_PIN, LOW);
   restore_default_values();
   Serial.println("reset succesfully!");
 }

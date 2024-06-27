@@ -14,8 +14,8 @@ void confermation_voiceover_sound() {
 void accomodate_response() {
   stop_flag_servo();
   if (!has_run_once_every_response) {
-    // updateLED(accomodation_percentage);
-    // responseLED(inner_LED_strip, 1, accomodation_percentage);
+    // displayLED(1, accomodation_percentage);
+    reset_LED();
 
     raise_flag_servo();
     has_run_once_every_response = true;
@@ -37,7 +37,7 @@ void accomodate_response() {
 
 void ignore_response() {
   if (!has_run_once_every_response) {
-    displayLED(2, ignore_percentage);
+    // displayLED(2, ignore_percentage);
     current_state = MOVE_OUT;
     has_run_once_every_response = true;
   }
@@ -57,7 +57,7 @@ void ignore_response() {
 
 void dispersal_response() {
   if (!has_run_once_every_response) {
-    displayLED(3, dispersal_percentage);
+    // displayLED(3, dispersal_percentage);
     digitalWrite(FOG_PIN, HIGH);
     has_run_once_every_response = true;
   }
@@ -77,7 +77,7 @@ void dispersal_response() {
 
 void arrest_response() {
   if (!has_run_once_every_response) {
-    displayLED(4, arrest_percentage);
+    // displayLED(4, arrest_percentage);
     has_run_once_every_response = true;
   }
   int number_of_audios = 1;
@@ -95,7 +95,7 @@ void arrest_response() {
 
 void violence_response() {
   if (!has_run_once_every_response) {
-    displayLED(5, violence_percentage);
+    // displayLED(5, violence_percentage);
     has_run_once_every_response = true;
   }
   int number_of_audios = 1;
