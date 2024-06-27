@@ -1,9 +1,9 @@
 
-#include <DFRobotDFPlayerMini.h>
-#include <SPI.h>                //SD card reader
-#include <SD.h>                 //SD card reader
-#include <Adafruit_NeoPixel.h>  //LED Strip
-#include <Servo.h>              //Flag, poltician
+#include <DFRobotDFPlayerMini.h>  //DFplayer
+#include <SPI.h>                  //SD card reader
+#include <SD.h>                   //SD card reader
+#include <Adafruit_NeoPixel.h>    //LED Strip
+#include <Servo.h>                //Flag, poltician
 
 /*
 Reader PIN - Arduino Uno PIN - Arduino Mega PIN
@@ -56,13 +56,13 @@ Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB +
 
 Servo flag_servo;  //Flag
 Servo politician_servo_1;
-Servo politician_servo_2; //Politician
+Servo politician_servo_2;  //Politicians
 Servo politician_servo_3;
 
 
-bool is_reset_pressed = false;  //check if the reset button is pressed
+bool is_reset_pressed = false;  //check if the reset button is pressed(by reading it from the arduino input)
 int decade_selection_value[] = { 0, 0 };
-int region_selection_value[] = { 0, 0 };  //first value is the readed one, second value is the one locked during the installation
+int region_selection_value[] = { 0, 0 };  //first value is the readed one, second value is the one locked during the showcasing of the installation
 int protest_selection_value[] = { 0, 0 };
 
 int accomodation_percentage = 0;
@@ -71,12 +71,12 @@ int dispersal_percentage = 0;
 int arrest_percentage = 0;
 int violence_percentage = 0;
 
-int response_switch_index = 0;
+int response_switch_index = 0;  //used to go throught all the different phases of the installations
 
-int percentage_revealed = 0;  //this is not in reset now
+int percentage_revealed = 0;  //this is not in the reset now
 
-bool is_audio_player_running = false;
-int current_audio_index = 0;
+bool is_audio_player_running = false;  //use to see if the audio player is playing an audio at the moment
+int current_audio_index = 0;           //used to play multiple different audios in one response
 
 int flag_raise = 1;
 int politician_spin = 1;
@@ -120,52 +120,38 @@ void loop() {
 
 
 void response() {
-  Serial.print("response_index" + String(response_switch_index));
-  Serial.println("player boolean:" + String(is_audio_player_running));
+  // Serial.print("response_index" + String(response_switch_index));
+  // Serial.println("player boolean:" + String(is_audio_player_running));
+
+
   if (response_switch_index == 0) {
     Serial.println("case 0");
     get_response_percentages();
-    Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+    // Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
     response_switch_index++;
   } else if (response_switch_index == 1) {
     Serial.println("case 1");
-    int number_of_audios = 4;
-    // Serial.println("num of audios" + String(number_of_audios));
-    // Serial.println("current audio index" + String(current_audio_index));
-    if (current_audio_index < number_of_audios) {
-      // Serial.println("player boolean:" + String(is_audio_player_running));
-      if (!is_audio_player_running) {
-        // Serial.println("play sound");
-        play_selection_voiceover();
-        current_audio_index++;
-      }
-    } else {
-      Serial.println("case 1 last");
-      response_switch_index++;
-      current_audio_index = 0;
-    }
+    confermation_voiceover_sound();
   } else if (response_switch_index == 2) {
     Serial.println("case 2");
-    // accomodate_response();
-    // Serial.println("herere");
-    response_switch_index++;
+    accomodate_response();
   } else if (response_switch_index == 3) {
     Serial.println("case 3");
-    // ignore_response();
-    response_switch_index++;
+    ignore_response();
+    // response_switch_index++;
   } else if (response_switch_index == 4) {
     Serial.println("case 4");
-    // dispersal_response();
-    response_switch_index++;
+    dispersal_response();
+    // response_switch_index++;
   } else if (response_switch_index == 5) {
     Serial.println("case 5");
-    // arrest_response();
-    response_switch_index++;
+    arrest_response();
+    // response_switch_index++;
   } else if (response_switch_index == 6) {
     Serial.println("case 6");
-    // violence_response();
-    response_switch_index++;
+    violence_response();
+    // response_switch_index++;
   } else {
-    Serial.println("fucker");
+    Serial.println("fucker, let me be, i'm in standby!");
   }
 }

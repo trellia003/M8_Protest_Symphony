@@ -79,7 +79,7 @@ void playSelectionProtest() {
 }
 
 void play_response_sound(int value) {
-  Serial.println("jo");
+  // Serial.println("jo");
   if (!is_audio_player_running) {
     audio_player.playFolder(1, value);
     Serial.println("response sound played");
