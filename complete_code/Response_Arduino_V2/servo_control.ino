@@ -27,59 +27,71 @@ void lower_flag_servo() {
 
 
 // // POLITICIAN SERVOS
-// enum PoliticianState {
-//   MOVE_OUT,
-//   STOPPED,
-//   MOVE_IN,
-//   FINAL_STOP
-// };
+enum PoliticianState {
+  MOVE_OUT,
+  STOPPED,
+  MOVE_IN,
+  FINAL_STOP
+};
 
-// PoliticianState politician_state = MOVE_OUT;  // Initial state
-// unsigned long politician_previousMillis = 0;  // Last time update
+PoliticianState current_state = MOVE_OUT; // Initial state
+unsigned long previousMillis = 0;   // Last time update
 
+void servoControl() {
+  unsigned long currentMillis = millis();
 
-// void servoControl() {
-//   unsigned long politician_currentMillis = millis();
+  switch (current_state) {
+    case MOVE_OUT:
+      move_out(currentMillis);
+      break;
 
-//   switch (politician_state) {
-//     case MOVE_OUT:
-//       politician_servo_1.write(60);
-//       politician_servo_2.write(60);
-//       politician_servo_3.write(60);
-//       if (politician_currentMillis - politician_previousMillis >= 700) {
-//         politician_state = STOPPED;
-//         politician_previousMillis = politician_currentMillis;
-//         // Stop the puppets
-//         politician_servo_1.write(90);
-//         politician_servo_2.write(90);
-//         politician_servo_3.write(90);
-//       }
-//       break;
+    case STOPPED:
+      stop(currentMillis);
+      break;
 
-//     case STOPPED:
-//       if (politician_currentMillis - politician_previousMillis >= 1000) {
-//         politician_state = MOVE_IN;
-//         politician_previousMillis = politician_currentMillis;
-//         // Move the puppets back in
-//         politician_servo_1.write(120);
-//         politician_servo_2.write(120);
-//         politician_servo_3.write(120);
-//       }
-//       break;
+    case MOVE_IN:
+      move_in(currentMillis);
+      break;
 
-//     case MOVE_IN:
-//       if (politician_currentMillis - politician_previousMillis >= 2000) {
-//         politician_state = FINAL_STOP;
-//         politician_previousMillis = politician_currentMillis;
-//         // Stop the puppets at their original positions
-//         politician_servo_1.write(90);
-//         politician_servo_2.write(90);
-//         politician_servo_3.write(90);
-//       }
-//       break;
+    case FINAL_STOP:
+      final_stop();
+      break;
+  }
+}
 
-//     case FINAL_STOP:
-//       politician_spin = 0;  // End the operation
-//       break;
-//   }
-// }
+void move_out(unsigned long currentMillis) {
+  politician_servo_1.write(60);
+  politician_servo_2.write(60);
+  politician_servo_3.write(60);
+  if (currentMillis - previousMillis >= 700) {
+    current_state = STOPPED;
+    previousMillis = currentMillis;
+  }
+}
+
+void stop(unsigned long currentMillis) {
+  politician_servo_1.write(90);
+  politician_servo_2.write(90);
+  politician_servo_3.write(90);
+  if (currentMillis - previousMillis >= 1000) {
+    current_state = MOVE_IN;
+    previousMillis = currentMillis;
+  }
+}
+
+void move_in(unsigned long currentMillis) {
+  politician_servo_1.write(120);
+  politician_servo_2.write(120);
+  politician_servo_3.write(120);
+  if (currentMillis - previousMillis >= 2000) {
+    current_state = FINAL_STOP;
+    previousMillis = currentMillis;
+  }
+}
+
+void final_stop() {
+  politician_servo_1.write(90);
+  politician_servo_2.write(90);
+  politician_servo_3.write(90);
+  politician_spin = 0; // End the operation
+}
