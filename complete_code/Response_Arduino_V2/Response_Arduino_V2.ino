@@ -103,6 +103,7 @@ int flag_interval_before_stopping = 0;
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
+  Serial3.begin(9600);
   setup_SD();
   setup_DFPlayer();
   setup_stepper_motor();

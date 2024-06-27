@@ -20,6 +20,12 @@ int violence_percent = 7;
 int percentage_shown = 0;
 
 
+String inputString = "";         // A string to hold incoming data
+boolean stringComplete = false;  // Whether the string is complete
+
+int int1, int2, int3;  // Variables to store the received integers
+
+
 void setup() {
   Serial.begin(9600);
   // put your setup code here, to run once:
@@ -30,34 +36,77 @@ void setup() {
 }
 
 void loop() {
-  // while (led_shown) {
-    responseLED(inner_LED_strip, 1, accomodate_percent);
-    responseLED(outer_LED_strip, 1, accomodate_percent);
-    updateLED(accomodate_percent);
-    delay(1000);
-    responseLED(inner_LED_strip, 2, ignore_percent);
-    responseLED(outer_LED_strip, 2, ignore_percent);
-    updateLED(ignore_percent);
-    delay(1000);
-    responseLED(inner_LED_strip, 3, disperse_percent);
-    responseLED(outer_LED_strip, 3, disperse_percent);
-    updateLED(disperse_percent);
-    delay(1000);
-    responseLED(inner_LED_strip, 4, arrest_percent);
-    responseLED(outer_LED_strip, 4, arrest_percent);
-    updateLED(arrest_percent);
-    delay(1000);
-    responseLED(inner_LED_strip, 5, violence_percent);
-    responseLED(outer_LED_strip, 5, violence_percent);
-    updateLED(violence_percent);
-    delay(1000);
-    // led_shown = 0;
+  readSerialData();
 
-    reset_LED();
-    delay(3000);
-  // }
+  // If a string has been received and is complete
+  if (stringComplete) {
+    // Parse the string to extract the integers
+    parseData();
+    // Print the received integers to the serial monitor
+    Serial.print("Received integers: ");
+    Serial.print(int1);
+    Serial.print(", ");
+    Serial.print(int2);
+    Serial.print(", ");
+    Serial.println(int3);
+
+    // Clear the string for the next data
+    inputString = "";
+    stringComplete = false;
+  }
+  // // while (led_shown) {
+  // responseLED(inner_LED_strip, 1, accomodate_percent);
+  // responseLED(outer_LED_strip, 1, accomodate_percent);
+  // updateLED(accomodate_percent);
+  // delay(1000);
+  // responseLED(inner_LED_strip, 2, ignore_percent);
+  // responseLED(outer_LED_strip, 2, ignore_percent);
+  // updateLED(ignore_percent);
+  // delay(1000);
+  // responseLED(inner_LED_strip, 3, disperse_percent);
+  // responseLED(outer_LED_strip, 3, disperse_percent);
+  // updateLED(disperse_percent);
+  // delay(1000);
+  // responseLED(inner_LED_strip, 4, arrest_percent);
+  // responseLED(outer_LED_strip, 4, arrest_percent);
+  // updateLED(arrest_percent);
+  // delay(1000);
+  // responseLED(inner_LED_strip, 5, violence_percent);
+  // responseLED(outer_LED_strip, 5, violence_percent);
+  // updateLED(violence_percent);
+  // delay(1000);
+  // // led_shown = 0;
+
+  // reset_LED();
+  // delay(3000);
+  // // }
 }
 
+
+
+void readSerialData() {
+  while (Serial.available()) {
+    // Get the new byte
+    char inChar = (char)Serial.read();
+    // Add it to the inputString
+    inputString += inChar;
+    // If the incoming character is a newline, set stringComplete to true
+    if (inChar == '\n') {
+      stringComplete = true;
+    }
+  }
+}
+
+void parseData() {
+  // Split the inputString at each comma
+  int commaIndex1 = inputString.indexOf(',');
+  int commaIndex2 = inputString.indexOf(',', commaIndex1 + 1);
+
+  // Convert the substrings to integers
+  int1 = inputString.substring(0, commaIndex1).toInt();
+  int2 = inputString.substring(commaIndex1 + 1, commaIndex2).toInt();
+  int3 = inputString.substring(commaIndex2 + 1).toInt();
+}
 
 void setSectionColor(Adafruit_NeoPixel& strip, int start, int end, uint32_t colorCode) {
   for (int i = start; i < end; i++) {
@@ -88,7 +137,7 @@ void responseLED(Adafruit_NeoPixel& strip, int current_response, int percentage)
   } else {
     // Handle wrapping
     setSectionColor(strip, start, num_led, colorCode);  // From start to end of strip
-    setSectionColor(strip, 0, end + 1, colorCode);          // From beginning of strip to wrapped end
+    setSectionColor(strip, 0, end + 1, colorCode);      // From beginning of strip to wrapped end
   }
   strip.show();
 }
@@ -102,10 +151,10 @@ void updateLED(int percentage) {
 
 void reset_LED() {
   for (int i = 0; i < INNER_NUM_LEDS; i++) {
-    inner_LED_strip.setPixelColor(i, inner_LED_strip.Color(0,0,0));
+    inner_LED_strip.setPixelColor(i, inner_LED_strip.Color(0, 0, 0));
   }
   for (int i = 0; i < OUTER_NUM_LEDS; i++) {
-    outer_LED_strip.setPixelColor(i, outer_LED_strip.Color(0,0,0));
+    outer_LED_strip.setPixelColor(i, outer_LED_strip.Color(0, 0, 0));
   }
   inner_LED_strip.show();
   outer_LED_strip.show();

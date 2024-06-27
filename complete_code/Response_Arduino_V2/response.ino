@@ -16,6 +16,7 @@ void accomodate_response() {
   if (!has_run_once_every_response) {
     // displayLED(1, accomodation_percentage);
     reset_LED();
+    Serial3.println("1," + String(violence_percentage) + "," + String(accomodation_percentage));
 
     raise_flag_servo();
     has_run_once_every_response = true;
