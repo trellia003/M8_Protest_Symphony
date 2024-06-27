@@ -1,3 +1,10 @@
+void displayLED(int current_response, int percentage) {
+  responseLED(inner_LED_strip, current_response, percentage);
+  responseLED(outer_LED_strip, current_response, percentage);
+
+  updateLED(percentage);
+}
+
 void responseLED(Adafruit_NeoPixel& strip, int current_response, int percentage) {
   int num_led = strip.numPixels();
   int offset = num_led * violence_percentage / 100;
