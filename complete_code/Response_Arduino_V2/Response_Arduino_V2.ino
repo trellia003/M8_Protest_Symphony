@@ -79,7 +79,7 @@ int percentage_revealed = 0;  //this is not in the reset now
 bool is_audio_player_running = false;  //use to see if the audio player is playing an audio at the moment
 int current_audio_index = 0;           //used to play multiple different audios in one response
 
-int flag_raise = 1;
+
 int politician_spin = 1;
 
 
@@ -93,7 +93,6 @@ void setup() {
   Serial1.begin(9600);
   setup_SD();
   setup_DFPlayer();
-  // setup_led_strips();
   setup_stepper_motor();
   setup_fog();
   setup_flag();

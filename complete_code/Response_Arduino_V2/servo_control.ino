@@ -9,7 +9,7 @@ void raise_flag_servo() {
 
 void stop_flag_servo() {  //needs to be in the response loop ahahah
   // Serial.println("stop servo outer");
-  Serial.println(String(millis()-flag_previous_millis)+"  "+String(flag_interval_before_stopping));
+  // Serial.println(String(millis()-flag_previous_millis)+"  "+String(flag_interval_before_stopping));
   if (millis() - flag_previous_millis >= flag_interval_before_stopping) {
     //stop
     Serial.println("stop servo iner");

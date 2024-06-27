@@ -29,11 +29,6 @@ void setup_DFPlayer() {
   audio_player.volume(24);  //Set volume value. From 0 to 30
 }
 
-void setup_led_strips() {
-  pinMode(LED_INNER_STRIP_PIN, OUTPUT);
-  pinMode(LED_OUTER_STRIP_PIN, OUTPUT);
-}
-
 void setup_stepper_motor() {
   pinMode(STEPPER_MOTOR_ENA_PIN, OUTPUT);
   pinMode(STEPPER_MOTOR_IN1_PIN, OUTPUT);
