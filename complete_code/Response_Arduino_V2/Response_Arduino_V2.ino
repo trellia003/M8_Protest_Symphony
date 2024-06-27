@@ -46,13 +46,14 @@ CS         - 10              - 53
 #define SERVO_NET_PIN 11
 
 //Number of LEDs of each strip
-#define NUM_LEDS_INNER 240
-#define NUM_LEDS_OUTER
+#define NUM_LEDS_INNER 91
+#define NUM_LEDS_OUTER 60
 
 
 File datasetFile;                                                                              //SD card reader
 DFRobotDFPlayerMini audio_player;                                                              //DF Player
 Adafruit_NeoPixel inner_LED_strip(NUM_LEDS_INNER, LED_INNER_STRIP_PIN, NEO_GRB + NEO_KHZ800);  //Inner LED Strip
+Adafruit_NeoPixel outer_LED_strip(NUM_LEDS_OUTER, LED_OUTER_STRIP_PIN, NEO_GRB + NEO_KHZ800);
 
 Servo flag_servo;  //Flag
 Servo politician_servo_1;
