@@ -73,13 +73,13 @@ int get_region() {      //read the region and convert it to 0,1europe,2asia,3not
 
   if (deviation_1_globe <= threshold_globe && deviation_1_globe >= 0 || deviation_2_globe <= threshold_globe && deviation_2_globe >= 0) {
     // Serial.println("entered");
-    if (average_globe > 100 && average_globe < 199) {  // region 1
+    if (average_globe > 420 && average_globe < 650) {  // region 1
       display_led_globe('g');
       return 1;
-    } else if (average_globe > 201 && average_globe < 299) {  // region 2
+    } else if (average_globe > 30 && average_globe < 360) {  // region 2
       display_led_globe('g');
       return 2;
-    } else if (average_globe > 301 && average_globe < 399) {  // region 3
+    } else if (average_globe > 850 && average_globe < 1023) {  // region 3
       display_led_globe('g');
       return 3;
     }
