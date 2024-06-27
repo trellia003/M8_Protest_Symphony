@@ -83,6 +83,11 @@ int flag_raise = 1;
 int politician_spin = 1;
 
 
+bool is_flag_raised = false;  //used to raise or lower the flag
+unsigned long flag_previous_millis = 0;
+int flag_interval_before_stopping = 0;
+
+
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);

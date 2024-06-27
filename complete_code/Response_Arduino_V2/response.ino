@@ -21,6 +21,7 @@ void accomodate_response() {
   int number_of_audios = 1;
   if (!is_flag_raised) {
     raise_flag_servo();
+    Serial.println("raise servo");
   }
   if (current_audio_index < number_of_audios) {
     if (!is_audio_player_running) {
@@ -29,10 +30,12 @@ void accomodate_response() {
     }
   } else if (!is_audio_player_running) {
     lower_flag_servo();
+    Serial.println("lower servo");
     response_switch_index++;
     current_audio_index = 0;
   }
   stop_flag_servo();
+  Serial.println("stop servo");
 }
 
 void ignore_response() {
