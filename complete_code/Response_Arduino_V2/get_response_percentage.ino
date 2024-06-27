@@ -1,16 +1,14 @@
 void get_response_percentages() {
-  // Serial.println("get_response");
   openFile("protest.csv");
   while (datasetFile.available()) {
-    // Serial.println("available");
     String line = datasetFile.readStringUntil('\n');
     processLine(line);
   }
   datasetFile.close();
+  response_switch_index++;
 }
 
 void processLine(String line) {
-  // Serial.println(line);
   int colIndex = 0;
   int col4 = -1, col5 = -1, col6 = -1, col7 = -1, col8 = -1;
   bool match = true;
@@ -20,9 +18,7 @@ void processLine(String line) {
       String value = line.substring(0, i);
       line = line.substring(i + 1);
       i = -1;  // reset the index to start from the next character
-
       if (colIndex == 0 && value.toInt() != region_selection_value[1]) {
-        // Serial.println("selectionregion" + String(region_selection_value));
         match = false;
         break;
       } else if (colIndex == 1 && value.toInt() != decade_selection_value[1]) {
@@ -47,7 +43,6 @@ void processLine(String line) {
       colIndex++;
     }
   }
-  // Serial.println(match);
 
   if (match) {
     accomodation_percentage = col4;
@@ -55,17 +50,6 @@ void processLine(String line) {
     dispersal_percentage = col6;
     arrest_percentage = col7;
     violence_percentage = col8;
-
-    // Serial.print("Accomodate: ");
-    // Serial.print(accomodation_percentage);
-    // Serial.print(", Ignore: ");
-    // Serial.print(ignore_percentage);
-    // Serial.print(", Disperse: ");
-    // Serial.print(dispersal_percentage);
-    // Serial.print(", Arrest: ");
-    // Serial.print(arrest_percentage);
-    // Serial.print(", Violence: ");
-    // Serial.println(violence_percentage);
   }
 }
 

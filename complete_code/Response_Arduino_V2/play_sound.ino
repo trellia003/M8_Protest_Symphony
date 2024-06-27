@@ -17,14 +17,7 @@ void play_selection_voiceover() {
 }
 
 void playVoiceOverBegin() {
-  // bool isPlayerRunning;
-  // isPlayerRunning = !digitalRead(SOUND_CONTROL_PIN);
-  // if (!isPlayerRunning) {
   audio_player.playFolder(2, 1);
-  // Serial.println("VO - begin");
-  // } else {
-  //   // Serial.println("VO - not begin");
-  // }
 }
 
 void playSelectionRegion() {
@@ -79,7 +72,6 @@ void playSelectionProtest() {
 }
 
 void play_response_sound(int value) {
-  // Serial.println("jo");
   if (!is_audio_player_running) {
     audio_player.playFolder(1, value);
     Serial.println("response sound played");

@@ -7,12 +7,10 @@ void raise_flag_servo() {
   is_flag_raised = true;
 }
 
-void stop_flag_servo() {  //needs to be in the response loop ahahah
-  // Serial.println("stop servo outer");
-  // Serial.println(String(millis()-flag_previous_millis)+"  "+String(flag_interval_before_stopping));
+void stop_flag_servo() {  
   if (millis() - flag_previous_millis >= flag_interval_before_stopping) {
     //stop
-    Serial.println("stop servo iner");
+    // Serial.println("stop servo iner");
     flag_servo.write(90);
   }
 }
@@ -26,7 +24,7 @@ void lower_flag_servo() {
 }
 
 
-// // POLITICIAN SERVOS
+// POLITICIAN SERVOS
 enum PoliticianState {
   MOVE_OUT,
   STOPPED,
