@@ -130,6 +130,8 @@ void response() {
   // Serial.println("player boolean:" + String(is_audio_player_running));
 
 
+
+
   if (response_switch_index == 0) {
     Serial.println("case 0");
     get_response_percentages();
@@ -137,11 +139,13 @@ void response() {
     response_switch_index++;
   } else if (response_switch_index == 1) {
     Serial.println("case 1");
-    confermation_voiceover_sound();
+    // confermation_voiceover_sound();
+    response_switch_index++;
   } else if (response_switch_index == 2) {
     Serial.println("case 2");
     accomodate_response();
   } else if (response_switch_index == 3) {
+    stop_flag_servo();
     Serial.println("case 3");
     ignore_response();
     // response_switch_index++;

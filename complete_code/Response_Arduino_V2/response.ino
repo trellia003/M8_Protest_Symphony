@@ -19,6 +19,7 @@ void confermation_voiceover_sound() {
 
 void accomodate_response() {
   int number_of_audios = 1;
+  stop_flag_servo();
   if (!is_flag_raised) {
     raise_flag_servo();
     Serial.println("raise servo");
@@ -26,6 +27,8 @@ void accomodate_response() {
   if (current_audio_index < number_of_audios) {
     if (!is_audio_player_running) {
       play_response_sound(1);
+      // flag_servo_control();
+
       current_audio_index++;
     }
   } else if (!is_audio_player_running) {
@@ -34,8 +37,6 @@ void accomodate_response() {
     response_switch_index++;
     current_audio_index = 0;
   }
-  stop_flag_servo();
-  Serial.println("stop servo");
 }
 
 void ignore_response() {
@@ -43,6 +44,7 @@ void ignore_response() {
   if (current_audio_index < number_of_audios) {
     if (!is_audio_player_running) {
       play_response_sound(2);
+
       current_audio_index++;
     }
   } else if (!is_audio_player_running) {

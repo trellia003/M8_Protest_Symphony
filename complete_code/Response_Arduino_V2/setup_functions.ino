@@ -48,14 +48,14 @@ void setup_fog() {
 }
 
 void setup_flag() {
-  pinMode(SERVO_FLAG_PIN, OUTPUT);
+  flag_servo.attach(SERVO_FLAG_PIN);
   flag_servo.write(90);
 }
 
 void setup_politician() {
-  pinMode(SERVO_POLITICIAN_A_PIN, OUTPUT);
-  pinMode(SERVO_POLITICIAN_B_PIN, OUTPUT);
-  pinMode(SERVO_POLITICIAN_C_PIN, OUTPUT);
+  politician_servo_1.attach(SERVO_POLITICIAN_A_PIN);
+  politician_servo_2.attach(SERVO_POLITICIAN_B_PIN);
+  politician_servo_3.attach(SERVO_POLITICIAN_C_PIN);
 }
 
 void setup_puppets() {

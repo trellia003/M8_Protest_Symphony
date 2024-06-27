@@ -2,14 +2,17 @@
 void raise_flag_servo() {
   //raise
   flag_servo.write(180);
-  flag_interval_before_stopping = 700;
+  flag_interval_before_stopping = 1199;
   flag_previous_millis = millis();
   is_flag_raised = true;
 }
 
-void stop_flag_servo() { //needs to be in the response loop ahahah 
-  if (millis() - flag_previous_millis >= flag_interval_before_stopping){
+void stop_flag_servo() {  //needs to be in the response loop ahahah
+  // Serial.println("stop servo outer");
+  Serial.println(String(millis()-flag_previous_millis)+"  "+String(flag_interval_before_stopping));
+  if (millis() - flag_previous_millis >= flag_interval_before_stopping) {
     //stop
+    Serial.println("stop servo iner");
     flag_servo.write(90);
   }
 }
@@ -17,67 +20,10 @@ void stop_flag_servo() { //needs to be in the response loop ahahah
 void lower_flag_servo() {
   //lower
   flag_servo.write(0);
-  flag_interval_before_stopping = 700;
+  flag_interval_before_stopping = 1000;
   flag_previous_millis = millis();
   is_flag_raised = false;
 }
-
-
-// // FLAG SERVO
-// enum FlagState {
-//   RAISE_FLAG,
-//   FLAG_RAISED,
-//   LOWER_FLAG,
-//   FLAG_LOWERED
-// };
-
-// FlagState flag_state = RAISE_FLAG;      // Start by raising the flag
-// unsigned long flag_previousMillis = 0;  // Stores the last time the flag state was updated
-
-
-
-
-
-
-// void flag_servo_control() {
-//   unsigned long flag_currentMillis = millis();
-
-//   switch (flag_state) {
-//     case RAISE_FLAG:
-//       flag_servo.write(180);
-//       if (flag_currentMillis - flag_previousMillis >= 1200) {  // Servo spin time
-//         flag_state = FLAG_RAISED;
-//         flag_previousMillis = flag_currentMillis;
-//         flag_servo.write(90);  // Stop the servo
-//       }
-//       break;
-
-//     case FLAG_RAISED:
-//       if (flag_currentMillis - flag_previousMillis >= 5000) {  // Flag stay up time
-//         flag_state = LOWER_FLAG;
-//         flag_previousMillis = flag_currentMillis;
-//       }
-//       break;
-
-//     case LOWER_FLAG:
-//       flag_servo.write(0);
-//       if (flag_currentMillis - flag_previousMillis >= 1250) {  // Servo spin time
-//         flag_state = FLAG_LOWERED;
-//         flag_previousMillis = flag_currentMillis;
-//         flag_servo.write(90);  // Stop the servo
-//       }
-//       break;
-
-//     case FLAG_LOWERED:
-//       flag_raise = 0;
-//       // Here you can decide what to do next, restart the sequence, or stop.
-//       // e.g., flag_state = RAISE_FLAG; to loop or just do nothing to stop
-//       break;
-//   }
-// }
-
-
-
 
 
 // // POLITICIAN SERVOS
