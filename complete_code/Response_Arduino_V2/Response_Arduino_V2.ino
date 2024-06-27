@@ -84,7 +84,18 @@ int current_audio_index = 0;           //used to play multiple different audios 
 int politician_spin = 1;
 
 
-bool is_flag_raised = false;  //used to raise or lower the flag
+
+// POLITICIAN SERVOS
+enum PoliticianState {
+  MOVE_OUT,
+  STOPPED,
+  MOVE_IN,
+  FINAL_STOP
+};
+PoliticianState current_state = MOVE_OUT; // Initial state
+unsigned long previousMillis = 0;   // Last time update
+
+bool has_run_once_every_response = false;  //used to raise or lower the flag
 unsigned long flag_previous_millis = 0;
 int flag_interval_before_stopping = 0;
 
