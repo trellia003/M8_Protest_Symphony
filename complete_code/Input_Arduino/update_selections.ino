@@ -27,9 +27,10 @@ int get_decade() {
   int arrayLength = sizeof(decade_potentiomiter_readings) / sizeof(decade_potentiomiter_readings[0]);
   decade_potentiomiter_total -= decade_potentiomiter_readings[decade_potentiomiter_readIndex];           // Remove the oldest entry
   decade_potentiomiter_readings[decade_potentiomiter_readIndex] = analogRead(DECADE_POTENTIOMETER_PIN);  // Read from the sensor
-  decade_potentiomiter_total += decade_potentiomiter_readings[decade_potentiomiter_readIndex];           // Add the newest reading to the total
-  decade_potentiomiter_readIndex = (decade_potentiomiter_readIndex + 1) % arrayLength;                   // Advance to the next position
-  average = decade_potentiomiter_total / arrayLength;                                                    // Calculate the average
+  // Serial.println(decade_potentiomiter_readings[decade_potentiomiter_readIndex]);
+  decade_potentiomiter_total += decade_potentiomiter_readings[decade_potentiomiter_readIndex];  // Add the newest reading to the total
+  decade_potentiomiter_readIndex = (decade_potentiomiter_readIndex + 1) % arrayLength;          // Advance to the next position
+  average = decade_potentiomiter_total / arrayLength;                                           // Calculate the average
 
   int decade = 0;
   if (120 <= average && average <= 280) {
@@ -48,22 +49,30 @@ int get_decade() {
 
 int get_region() {      //read the region and convert it to 0,1europe,2asia,3notrth america
   int total_globe = 0;  // sum of measurements values
+  float deviation_1_globe = 0;
+  float deviation_2_globe = 0;
   for (int i = 0; i < num_measurements_globe_buffer; i++) {
     pot_value_globe = analogRead(GLOBE_POTMETER_ANALOG_PIN);  //Read and save analog value from potentiometer
-    // Serial.println(pot_value_globe);
+    // Serial.print(pot_value_globe);
+    // Serial.print("...");
     globe_measurements_buffer[i] = pot_value_globe;
     total_globe = total_globe + pot_value_globe;
     // delay(100);
   }
+  
+  // Serial.println();
   float average_globe = total_globe / (num_measurements_globe_buffer);
-  float deviation_1_globe = globe_measurements_buffer[0] - globe_measurements_buffer[num_measurements_globe_buffer];  // measures the deviation between first and last value
-  float deviation_2_globe = globe_measurements_buffer[num_measurements_globe_buffer] - globe_measurements_buffer[0];  // measures the deviation between first and last value
+  // Serial.println(globe_measurements_buffer[0]);
+  // Serial.println(globe_measurements_buffer[num_measurements_globe_buffer-1]);
+  deviation_1_globe = globe_measurements_buffer[0] - globe_measurements_buffer[num_measurements_globe_buffer-1];  // measures the deviation between first and last value
+  deviation_2_globe = globe_measurements_buffer[num_measurements_globe_buffer-1] - globe_measurements_buffer[0];  // measures the deviation between first and last value
 
   // Serial.println(average_globe);
   // Serial.println(deviation_1_globe);
   // Serial.println(deviation_2_globe);
 
   if (deviation_1_globe <= threshold_globe && deviation_1_globe >= 0 || deviation_2_globe <= threshold_globe && deviation_2_globe >= 0) {
+    // Serial.println("entered");
     if (average_globe > 100 && average_globe < 199) {  // region 1
       display_led_globe('g');
       return 1;

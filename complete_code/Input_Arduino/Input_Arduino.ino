@@ -40,16 +40,16 @@ Digital pin arduino
   |
  GND
 */
-#define BUZZER_DECADE_FEEDBACK_PIN 3
-#define BUZZER_REGION_FEEDBACK_PIN 7
-#define BUZZER_PROTEST_FEEDBACK_PIN 5
+#define BUZZER_DECADE_FEEDBACK_PIN 2  //correct
+#define BUZZER_REGION_FEEDBACK_PIN 6  //correct
+#define BUZZER_PROTEST_FEEDBACK_PIN 4 //correct
 
-#define LED_DECADE_FEEDBACK_PIN 2
-#define LED_REGION_FEEDBACK_PIN 6
-#define LED_PROTEST_FEEDBACK_PIN 4
+#define LED_DECADE_FEEDBACK_PIN 3  //correct
+#define LED_REGION_FEEDBACK_PIN 7  //correct
+#define LED_PROTEST_FEEDBACK_PIN 5 //correct
 
 
-#define DECADE_POTENTIOMETER_PIN A0
+#define DECADE_POTENTIOMETER_PIN A4  //correct
 
 /* code for the module 8 project to check if the hand is place on the LDR, made by Jarne Groenewegen CreaTe
 Connect the LDR in a voltage divider circuit with 10k ohm resistor, threshold values should be changed for the different LDRs as they are physical components with different values
@@ -64,9 +64,9 @@ Connect the LDR in a voltage divider circuit with 10k ohm resistor, threshold va
       |
      GND
 */
-#define HANDSELECT_LDR_ANALOG_Pin1 A1
-#define HANDSELECT_LDR_ANALOG_Pin2 A2
-#define HANDSELECT_LDR_ANALOG_Pin3 A3
+#define HANDSELECT_LDR_ANALOG_Pin1 A2  //correct billboard
+#define HANDSELECT_LDR_ANALOG_Pin2 A5  //correct decade
+#define HANDSELECT_LDR_ANALOG_Pin3 A3  //correct globe
 
 
 /*
@@ -76,14 +76,14 @@ arduino
     |
 LED connection 
 */
-#define GLOBE_LED_STRIP_PIN 8  //uses a 510 omh between arduino and connection
-#define GLOBE_POTMETER_ANALOG_PIN A4
+#define GLOBE_LED_STRIP_PIN 8         //uses a 510 omh between arduino and connection
+#define GLOBE_POTMETER_ANALOG_PIN A0  //correct
 #define GLOBE_LED_QUANTITY 6
 
 
-#define RESET_BUTTON_PIN A5
+#define RESET_BUTTON_PIN A1  //correct
 
-MFRC522 billboard_rfid(BILLBOARD_RFID_SDA_PIN, BILLBOARD_RFID_RST_PIN);                                // Create MFRC522 instance
+MFRC522 billboard_rfid(BILLBOARD_RFID_SDA_PIN, BILLBOARD_RFID_RST_PIN);                                      // Create MFRC522 instance
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(GLOBE_LED_QUANTITY, GLOBE_LED_STRIP_PIN, NEO_GRB + NEO_KHZ800);  //needed for the led strip
 
 
@@ -98,17 +98,17 @@ int decade_potentiomiter_total = 0;                 // The running total
 
 int billboard_RFID_buffer_readings[] = { 0, 0 };  //needed to filter out the ddouble reading(0) of the RFID
 
-const int num_measurements_globe_buffer = 15;                  //how many measurements we want to make for the value descion
-const int threshold_globe = 2;                                 //how much difference there can be between the values
+const int num_measurements_globe_buffer = 5;                  //how many measurements we want to make for the value descion
+const int threshold_globe = 4;                                 //how much difference there can be between the values
 int globe_measurements_buffer[num_measurements_globe_buffer];  //initialize the buffer
 int pot_value_globe;                                           // variable that saves the pot data
 
 
 void setup() {
   Serial.begin(9600);
-  Serial1.begin(9600);          //start the Serial communication
-  SPI.begin();                 // Initialize SPI bus RFID
-  billboard_rfid.PCD_Init();   // Initialize MFRC522 RFID
+  Serial1.begin(9600);        //start the Serial communication
+  SPI.begin();                // Initialize SPI bus RFID
+  billboard_rfid.PCD_Init();  // Initialize MFRC522 RFID
 
   // Initialize buzzer pins as output
   pinMode(BUZZER_DECADE_FEEDBACK_PIN, OUTPUT);
@@ -129,13 +129,21 @@ void setup() {
   pinMode(GLOBE_POTMETER_ANALOG_PIN, INPUT);  //pin for potentiometer
 
   //reset button
-  pinMode(RESET_BUTTON_PIN, INPUT); // Set the button pin as input
+  pinMode(RESET_BUTTON_PIN, INPUT);  // Set the button pin as input
 }
 
 void loop() {
   update_selections();                  //the function read all the sensors and update the variables with the new mapped values
   give_feedback_to_user();              //provide feedback to the user with 3 buzzer sound(when a selection is changed) and 3 led (if the selction is correct). 1led and 1 buzzer per input
   communication_to_response_arduino();  //send messages to the response arduino reset=(if a selection is changed) and start=( if the input is valud and the hands are there )
-  // Serial.println(selected_protest[0]);
-  delay(10);                            //MAYBE INCREASE IT ? FOR BUZZER SOUND AND RFID READING
+  // debug();
+  delay(20);  //MAYBE INCREASE IT ? FOR BUZZER SOUND AND RFID READING
+}
+
+
+void debug() {
+  String d = String(selected_decade[0]);
+  String r = String(selected_region[0]);
+  String p = String(selected_protest[0]);
+  Serial.println("decade: " + d + "  region: " + r + "  protest: " + p);
 }

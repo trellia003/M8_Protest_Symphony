@@ -19,29 +19,20 @@ void confermation_voiceover_sound() {
 
 void accomodate_response() {
   int number_of_audios = 1;
+  if (!is_flag_raised) {
+    raise_flag_servo();
+  }
   if (current_audio_index < number_of_audios) {
     if (!is_audio_player_running) {
       play_response_sound(1);
       current_audio_index++;
     }
   } else if (!is_audio_player_running) {
+    lower_flag_servo();
     response_switch_index++;
     current_audio_index = 0;
   }
-
-
-
-  // Serial.println("hello");
-  // play_response_sound(1);
-  //LED shown
-  // inner_response_LED(1, accomodation_percentage);
-
-  // //Raise Flag
-  // int flag_raise = 1;
-  // while (flag_raise == 1) {
-  //   flag_servo_control();
-  //   flag_raise = 0;
-  // }
+  stop_flag_servo();
 }
 
 void ignore_response() {

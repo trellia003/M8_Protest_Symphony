@@ -1,3 +1,31 @@
+bool is_flag_raised = false;  //used to raise or lower the flag
+unsigned long flag_previousMillis = 0;
+int flag_interval_before_stopping = 0;
+
+void raise_flag_servo() {
+  //raise
+  flag_servo.write(180);
+  flag_interval_before_stopping = 700;
+  flag_previous_millis = millis();
+  is_flag_raised = true;
+}
+
+void stop_flag_servo() { //needs to be in the response loop ahahah 
+  if (millis() - flag_previousMillis >= flag_interval_before_stopping){
+    //stop
+    flag_servo.write(90);
+  }
+}
+
+void lower_flag_servo() {
+  //lower
+  flag_servo.write(0);
+  flag_interval_before_stopping = 700;
+  flag_previous_millis = millis();
+  is_flag_raised = fale;
+}
+
+
 // FLAG SERVO
 enum FlagState {
   RAISE_FLAG,
@@ -6,13 +34,18 @@ enum FlagState {
   FLAG_LOWERED
 };
 
-FlagState flag_state = RAISE_FLAG;       // Start by raising the flag
+FlagState flag_state = RAISE_FLAG;      // Start by raising the flag
 unsigned long flag_previousMillis = 0;  // Stores the last time the flag state was updated
+
+
+
+
+
 
 void flag_servo_control() {
   unsigned long flag_currentMillis = millis();
 
-  switch(flag_state) {
+  switch (flag_state) {
     case RAISE_FLAG:
       flag_servo.write(180);
       if (flag_currentMillis - flag_previousMillis >= 700) {  // Servo spin time
@@ -23,7 +56,7 @@ void flag_servo_control() {
       break;
 
     case FLAG_RAISED:
-      if (flag_currentMillis - flag_previousMillis >= 5000) { // Flag stay up time
+      if (flag_currentMillis - flag_previousMillis >= 5000) {  // Flag stay up time
         flag_state = LOWER_FLAG;
         flag_previousMillis = flag_currentMillis;
       }
@@ -46,6 +79,10 @@ void flag_servo_control() {
   }
 }
 
+
+
+
+
 // POLITICIAN SERVOS
 enum PoliticianState {
   MOVE_OUT,
@@ -54,8 +91,8 @@ enum PoliticianState {
   FINAL_STOP
 };
 
-PoliticianState politician_state = MOVE_OUT; // Initial state
-unsigned long politician_previousMillis = 0;   // Last time update
+PoliticianState politician_state = MOVE_OUT;  // Initial state
+unsigned long politician_previousMillis = 0;  // Last time update
 
 
 void servoControl() {
@@ -99,7 +136,7 @@ void servoControl() {
       break;
 
     case FINAL_STOP:
-      politician_spin = 0; // End the operation
+      politician_spin = 0;  // End the operation
       break;
   }
 }
