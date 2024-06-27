@@ -20,9 +20,6 @@ CS         - 10              - 53
 
 #define BUSY_PIN_DFPLAYER_PIN 47  //busy pin of the dfplayer to check if the sound is playing
 
-#define LED_INNER_STRIP_PIN 43
-#define LED_OUTER_STRIP_PIN 42
-
 #define STEPPER_MOTOR_ENA_PIN 39
 #define STEPPER_MOTOR_IN1_PIN 37
 #define STEPPER_MOTOR_IN2_PIN 35
@@ -44,6 +41,10 @@ CS         - 10              - 53
 #define SERVO_PUPPETS_4_PIN 10
 
 #define SERVO_NET_PIN 11
+
+#define LED_INNER_STRIP_PIN 12
+#define LED_OUTER_STRIP_PIN 13
+
 
 //Number of LEDs of each strip
 #define NUM_LEDS_INNER 91
@@ -134,12 +135,12 @@ void response() {
   if (response_switch_index == 0) {
     Serial.println("case 0");
     get_response_percentages();
-    // Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+    Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
     response_switch_index++;
   } else if (response_switch_index == 1) {
     Serial.println("case 1");
-    // confermation_voiceover_sound();
-    response_switch_index++;
+    confermation_voiceover_sound();
+    // response_switch_index++;
   } else if (response_switch_index == 2) {
     Serial.println("case 2");
     accomodate_response();

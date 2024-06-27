@@ -28,6 +28,7 @@ void accomodate_response() {
     if (!is_audio_player_running) {
       play_response_sound(1);
       // flag_servo_control();
+      displayLED(1, accomodation_percentage);
 
       current_audio_index++;
     }
@@ -45,6 +46,7 @@ void ignore_response() {
     if (!is_audio_player_running) {
       play_response_sound(2);
 
+      displayLED(2, ignore_percentage);
       current_audio_index++;
     }
   } else if (!is_audio_player_running) {
@@ -61,6 +63,8 @@ void dispersal_response() {
 
     if (!is_audio_player_running) {
       play_response_sound(3);
+
+      displayLED(3, dispersal_percentage);
       current_audio_index++;
     }
   } else if (!is_audio_player_running) {
@@ -77,6 +81,7 @@ void arrest_response() {
 
     if (!is_audio_player_running) {
       play_response_sound(4);
+      displayLED(4, arrest_percentage);
       current_audio_index++;
     }
   } else if (!is_audio_player_running) {
@@ -93,6 +98,7 @@ void violence_response() {
 
     if (!is_audio_player_running) {
       play_response_sound(5);
+      displayLED(5, violence_percentage);
       current_audio_index++;
     }
   } else if (!is_audio_player_running) {

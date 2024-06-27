@@ -1,6 +1,6 @@
 void reset_installation() {
   // delay(1000);
-
+  set_all_color((255,255,255));
   restore_default_values();
   Serial.println("reset succesfully!");
 }
