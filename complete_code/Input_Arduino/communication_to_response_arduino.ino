@@ -1,12 +1,30 @@
 //MAYBE ADD A BUFFER SO IT SENSD MSG ONLY IF THE PREVIOUS MESSAGE IS DIFFERENT(OnLY start reset), it does not matter the selections
+bool is_reset_button_state[2] = { false, false };       //first one is the current reading, second is the last one changed. i use this to see if the two values changes
+bool are_all_hands_placed_state[2] = { false, false };  //first one is the current reading, second is the last one changed. i use this to see if the two values changes
 
 void communication_to_response_arduino() {
-  // if (is_any_selection_different_and_valid()) {  //if any selection is different from it's previous one and valid
-  if (digitalRead(RESET_BUTTON_PIN)) {  //if reset button is pressed
-    Serial1.println("RESET/");
+  is_reset_button_state[0] = digitalRead(RESET_BUTTON_PIN);
+
+  if (is_reset_button_state[0] != is_reset_button_state[1]) {
+    if (is_reset_button_state[0]) {  //if reset button is pressed
+      Serial1.println("RESET");
+      Serial.println("RESET");
+    } else {
+      //button released
+    }
+    is_reset_button_state[1] = is_reset_button_state[0];
   }
-  if (are_all_selection_valid() && are_all_hands_placed()) {
-    Serial1.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
+
+  are_all_hands_placed_state[0] = are_all_hands_placed();
+  if (are_all_hands_placed_state[0] != are_all_hands_placed_state[1]) {
+    if (are_all_hands_placed_state[0]) {
+      if (are_all_selection_valid()) {
+        Serial1.println("START;D:" + String(selected_decade[0]) + ";R:" + String(selected_region[0]) + ";P:" + String(selected_protest[0]));
+      }
+    } else {
+      //hands released
+    }
+    are_all_hands_placed_state[1] = are_all_hands_placed_state[0];
   }
 }
 
