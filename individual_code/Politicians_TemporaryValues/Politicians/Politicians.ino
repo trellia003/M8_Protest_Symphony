@@ -37,43 +37,56 @@ void servoControl() {
 
   switch (currentState) {
     case MOVE_OUT:
-      politicianServo1.write(60);
-      politicianServo2.write(60);
-      politicianServo3.write(60);
-      if (currentMillis - previousMillis >= 700) {
-        currentState = STOPPED;
-        previousMillis = currentMillis;
-        // Stop the puppets
-        politicianServo1.write(90);
-        politicianServo2.write(90);
-        politicianServo3.write(90);
-      }
+      move_out(currentMillis);
       break;
 
     case STOPPED:
-      if (currentMillis - previousMillis >= 1000) {
-        currentState = MOVE_IN;
-        previousMillis = currentMillis;
-        // Move the puppets back in
-        politicianServo1.write(120);
-        politicianServo2.write(120);
-        politicianServo3.write(120);
-      }
+      stop(currentMillis);
       break;
 
     case MOVE_IN:
-      if (currentMillis - previousMillis >= 2000) {
-        currentState = FINAL_STOP;
-        previousMillis = currentMillis;
-        // Stop the puppets at their original positions
-        politicianServo1.write(90);
-        politicianServo2.write(90);
-        politicianServo3.write(90);
-      }
+      move_in(currentMillis);
       break;
 
     case FINAL_STOP:
-      servoSpin = 0; // End the operation
+      final_stop();
       break;
   }
+}
+
+void move_out(unsigned long currentMillis) {
+  politicianServo1.write(60);
+  politicianServo2.write(60);
+  politicianServo3.write(60);
+  if (currentMillis - previousMillis >= 700) {
+    currentState = STOPPED;
+    previousMillis = currentMillis;
+  }
+}
+
+void stop(unsigned long currentMillis) {
+  politicianServo1.write(90);
+  politicianServo2.write(90);
+  politicianServo3.write(90);
+  if (currentMillis - previousMillis >= 1000) {
+    currentState = MOVE_IN;
+    previousMillis = currentMillis;
+  }
+}
+
+void move_in(unsigned long currentMillis) {
+  politicianServo1.write(120);
+  politicianServo2.write(120);
+  politicianServo3.write(120);
+  if (currentMillis - previousMillis >= 2000) {
+    currentState = FINAL_STOP;
+    previousMillis = currentMillis;
+  }
+}
+
+void final_stop() {
+  politicianServo1.write(90);
+  politicianServo2.write(90);
+  politicianServo3.write(90);
+  servoSpin = 0; // End the operation
 }
