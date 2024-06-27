@@ -20,49 +20,44 @@ int violence_percent = 7;
 int percentage_shown = 0;
 
 
-int led_shown = 1;
-
 void setup() {
   Serial.begin(9600);
   // put your setup code here, to run once:
   inner_LED_strip.begin();
   outer_LED_strip.begin();
+
+  // reset_LED();
 }
 
 void loop() {
-  while (led_shown) {
+  // while (led_shown) {
     responseLED(inner_LED_strip, 1, accomodate_percent);
     responseLED(outer_LED_strip, 1, accomodate_percent);
     updateLED(accomodate_percent);
-    // delay(1000);
+    delay(1000);
     responseLED(inner_LED_strip, 2, ignore_percent);
     responseLED(outer_LED_strip, 2, ignore_percent);
     updateLED(ignore_percent);
-    // delay(1000);
+    delay(1000);
     responseLED(inner_LED_strip, 3, disperse_percent);
     responseLED(outer_LED_strip, 3, disperse_percent);
     updateLED(disperse_percent);
-    // delay(1000);
+    delay(1000);
     responseLED(inner_LED_strip, 4, arrest_percent);
     responseLED(outer_LED_strip, 4, arrest_percent);
     updateLED(arrest_percent);
-    // delay(1000);
+    delay(1000);
     responseLED(inner_LED_strip, 5, violence_percent);
     responseLED(outer_LED_strip, 5, violence_percent);
     updateLED(violence_percent);
-    // delay(1000);
-    led_shown = 0;
-  }
+    delay(1000);
+    // led_shown = 0;
+
+    reset_LED();
+    delay(3000);
+  // }
 }
 
-
-//function to set set Color for each section
-// void setSectionColor(int start, int end, uint32_t color) {
-//   for (int i = start; i < end; i++) {
-//     inner_LED_strip.setPixelColor(i, color);
-//     outer_LED_strip.setPixelColor(i, color);
-//   }
-// }
 
 void setSectionColor(Adafruit_NeoPixel& strip, int start, int end, uint32_t colorCode) {
   for (int i = start; i < end; i++) {
@@ -79,28 +74,6 @@ void setAllColor(uint32_t color) {
     outer_LED_strip.setPixelColor(i, color);
   }
 }
-
-// void responseLED(int current_response, int percentage) {
-//   int offset = INNER_NUM_LEDS * violence_percent / 100;  // Start at the 10th LED
-//   int start = (INNER_NUM_LEDS * percentage_shown / 100 + offset) % INNER_NUM_LEDS;
-//   int end = (start + INNER_NUM_LEDS * percentage / 100) % INNER_NUM_LEDS;
-//   uint32_t colorCode = getLEDColorCode(inner_LED_strip, current_response);
-
-//   if (start < end) {
-//     // Normal case where no wrapping is necessary
-//     setSectionColor(start, end, colorCode);
-//   } else {
-//     // Handle wrapping
-//     setSectionColor(start, INNER_NUM_LEDS, colorCode);  // From start to end of strip
-//     setSectionColor(0, end, colorCode);           // From beginning of strip to wrapped end
-//   }
-//   inner_LED_strip.show();
-//   // delay(5000); // You can adjust or enable delay for testing
-//   percentage_shown += percentage;
-//   if (percentage_shown >= 100) {
-//     percentage_shown = 0;
-//   }  // Reset after full cycle
-// }
 
 void responseLED(Adafruit_NeoPixel& strip, int current_response, int percentage) {
   int num_led = strip.numPixels();
@@ -126,6 +99,18 @@ void updateLED(int percentage) {
     percentage_shown = 0;
   }  // Reset after full cycle
 }
+
+void reset_LED() {
+  for (int i = 0; i < INNER_NUM_LEDS; i++) {
+    inner_LED_strip.setPixelColor(i, inner_LED_strip.Color(0,0,0));
+  }
+  for (int i = 0; i < OUTER_NUM_LEDS; i++) {
+    outer_LED_strip.setPixelColor(i, outer_LED_strip.Color(0,0,0));
+  }
+  inner_LED_strip.show();
+  outer_LED_strip.show();
+}
+
 
 //function to get the LED color for each response
 uint32_t getLEDColorCode(Adafruit_NeoPixel& strip, int current_response) {
