@@ -115,76 +115,26 @@ void move_arm_to(int degrees) {  //move arm to angle relative to the starting po
   stepstaken += absolute_steps;
 }
 
-void accomodation(int percentage) {
-  //go behind puppets, servo's are still down.
-  move_arm(percentage);
-  //Raise puppets
+void arm_accomodation(int percentage) {
   all_up();
-  move_arm(-percentage);
-  //go to next section
-  all_down();
   move_arm(percentage);
 }
 
-void ignore(int percentage) {
-  //go behind puppets, servo's are still down.
-  move_arm(percentage);
-  //Raise puppets
-  all_up();
-  move_arm(-percentage);
-  //go to next section
-  all_down();
+void arm_ignore(int percentage) {
   move_arm(percentage);
 }
 
-void disperse(int percentage) {
-  //go behind puppets, servo's are still down.
-  move_arm(percentage);
-  //Raise puppets
+void arm_disperse(int percentage) {
   all_up();
   move_arm(-percentage);
-  //Drop puppets and go to next section
-  move_arm(percentage);
 }
 
-void arrests(int percentage) {
-  //go behind puppets
-  all_down();
-  move_arm(percentage);
-  if (percentage > 15) {
-    //move both masts seperately
-    setArmNetServo(true);
-    move_arm(-15);
-    //switch to other masts
-    setArmNetServo(false);
-    stepper.step(-5);
-    //move other mast
-    setArmNetServo(true);
-    move_arm(-(percentage - 15));
-    setArmNetServo(false);
-  } else if (percentage > 3) {
-    //move one mast (or both to same place, not sure yet)
-    setArmNetServo(true);
-    move_arm(-percentage);
-    setArmNetServo(false);
-  }
-  //Raise puppets
-  all_up();
+void arm_arrests(int percentage) {
   move_arm(-percentage);
-  //Drop puppets and go to next section
-  move_arm(percentage);
 }
 
-void violence(int percentage) {
-  //go behind puppets
-  all_down();
+void arm_violence(int percentage) {
   move_arm(percentage);
-  //Raise puppets
-  all_up();
-  move_arm(-percentage);
-  //Drop puppets and go to next section //maybe improve to only drop a few.
-  move_arm(percentage);
-  delay(3000);
 }
 
 void reset_puppets() {  //function is called when arm is at end
