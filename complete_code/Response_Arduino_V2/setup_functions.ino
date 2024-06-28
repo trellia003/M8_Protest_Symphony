@@ -36,6 +36,10 @@ void setup_fog() {
   pinMode(FOG_PIN, OUTPUT);
 }
 
+void setup_led_strip() {
+  inner_LED_strip.begin();
+  outer_LED_strip.begin();
+}
 void setup_flag() {
   flag_servo.attach(SERVO_FLAG_PIN);
   flag_servo.write(90);

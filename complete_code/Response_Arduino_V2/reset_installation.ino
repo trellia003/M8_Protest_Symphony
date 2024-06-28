@@ -9,6 +9,7 @@ void reset_installation() {
   delay(1000);
   flag_servo.write(90);
 
+  // if (current_state == MOVE_OUT) {
   politician_servo_1.write(120);
   politician_servo_2.write(120);
   politician_servo_3.write(120);
@@ -16,6 +17,7 @@ void reset_installation() {
   politician_servo_1.write(90);
   politician_servo_2.write(90);
   politician_servo_3.write(90);
+  // }
 
   digitalWrite(FOG_PIN, LOW);
   restore_default_values();

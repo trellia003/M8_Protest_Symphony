@@ -1,4 +1,3 @@
-
 #include <DFRobotDFPlayerMini.h>  //DFplayer
 #include <SPI.h>                  //SD card reader
 #include <SD.h>                   //SD card reader
@@ -83,6 +82,8 @@ int current_audio_index = 0;           //used to play multiple different audios 
 
 int politician_spin = 1;
 
+int led_strip_threshold = 2;
+
 
 
 // POLITICIAN SERVOS
@@ -92,8 +93,8 @@ enum PoliticianState {
   MOVE_IN,
   FINAL_STOP
 };
-PoliticianState current_state = MOVE_OUT; // Initial state
-unsigned long previousMillis = 0;   // Last time update
+PoliticianState current_state = MOVE_OUT;  // Initial state
+unsigned long previousMillis = 0;          // Last time update
 
 bool has_run_once_every_response = false;  //used to raise or lower the flag
 unsigned long flag_previous_millis = 0;
@@ -107,6 +108,7 @@ void setup() {
   setup_SD();
   setup_DFPlayer();
   setup_stepper_motor();
+  setup_led_strip();
   setup_fog();
   setup_flag();
   setup_politician();
@@ -141,24 +143,24 @@ void response() {
   if (response_switch_index == 0) {
     Serial.println("case 0");
     get_response_percentages();
-    // Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
+    Serial.println("    percentage:" + String(accomodation_percentage) + ":" + String(ignore_percentage) + ":" + String(dispersal_percentage) + ":" + String(arrest_percentage) + ":" + String(violence_percentage));
   } else if (response_switch_index == 1) {
     // Serial.println("case 1");
     confermation_voiceover_sound();
-  } else if (response_switch_index == 2) {
+  } else if (response_switch_index == 2 && accomodation_percentage > led_strip_threshold) {
     // Serial.println("case 2");
     accomodate_response();
-  } else if (response_switch_index == 3) {
+  } else if (response_switch_index == 3 && ignore_percentage > led_strip_threshold) {
     stop_flag_servo();
     // Serial.println("case 3");
     ignore_response();
-  } else if (response_switch_index == 4) {
+  } else if (response_switch_index == 4 && dispersal_percentage > led_strip_threshold) {
     // Serial.println("case 4");
     dispersal_response();
-  } else if (response_switch_index == 5) {
+  } else if (response_switch_index == 5 && arrest_percentage > led_strip_threshold) {
     // Serial.println("case 5");
     arrest_response();
-  } else if (response_switch_index == 6) {
+  } else if (response_switch_index == 6 && violence_percentage > led_strip_threshold) {
     // Serial.println("case 6");
     violence_response();
   } else {

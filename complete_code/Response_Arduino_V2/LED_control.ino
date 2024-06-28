@@ -1,4 +1,5 @@
 void displayLED(int current_response, int percentage) {
+
   responseLED(inner_LED_strip, current_response, percentage);
   responseLED(outer_LED_strip, current_response, percentage);
 
@@ -11,8 +12,8 @@ void responseLED(Adafruit_NeoPixel& strip, int current_response, int percentage)
   int start = (num_led * percentage_revealed / 100 + offset) % num_led;
   int end = (start + num_led * percentage / 100) % num_led;
   uint32_t colorCode = get_LED_color(strip, current_response);
-  Serial.println("start: " + String(start));
-  Serial.println("end: " + String(end));
+  // Serial.println("start: " + String(start));
+  // Serial.println("end: " + String(end));
 
   if (start < end) {
     // Normal case where no wrapping is necessary
@@ -20,15 +21,17 @@ void responseLED(Adafruit_NeoPixel& strip, int current_response, int percentage)
   } else {
     // Handle wrapping
     set_section_color(strip, start, num_led, colorCode);  // From start to end of strip
-    set_section_color(strip, 0, end + 1, colorCode);          // From beginning of strip to wrapped end
+    set_section_color(strip, 0, end + 1, colorCode);      // From beginning of strip to wrapped end
   }
   strip.show();
 }
 
 void updateLED(int percentage) {
   percentage_revealed += percentage;
+  Serial.println(String(percentage_revealed));
   if (percentage_revealed >= 100) {
     percentage_revealed = 0;
+    Serial.println("percentage 0" );
   }  // Reset after full cycle
 }
 
@@ -54,7 +57,7 @@ uint32_t get_LED_color(Adafruit_NeoPixel& strip, int current_response) {
       if (compareLED(strip, inner_LED_strip)) {
         return strip.Color(255, 255, 0);
       } else if (compareLED(strip, outer_LED_strip)) {
-        return strip.Color(255, 0, 255);
+        return strip.Color(255, 0, 250);
       }
       //Disperse - Yellow
     case 4:
@@ -77,7 +80,7 @@ void set_section_color(Adafruit_NeoPixel& strip, int start, int end, uint32_t co
   }
 }
 
-//function to set Color for the whole strip 
+//function to set Color for the whole strip
 void set_all_color(uint32_t color) {
   for (int i = 0; i < NUM_LEDS_INNER; i++) {
     inner_LED_strip.setPixelColor(i, color);
@@ -92,13 +95,13 @@ bool compareLED(Adafruit_NeoPixel& strip1, Adafruit_NeoPixel& strip2) {
 }
 
 void reset_LED() {
-  for (int i = 1; i <= NUM_LEDS_INNER; i++) {
-    Serial.println("Resetting inner LED: " + String(i)); // Debug print
-    inner_LED_strip.setPixelColor(i, inner_LED_strip.Color(255,0,0));
+  for (int i = 0; i <= NUM_LEDS_INNER; i++) {
+    // Serial.println("Resetting inner LED: " + String(i)); // Debug print
+    inner_LED_strip.setPixelColor(i, inner_LED_strip.Color(0, 0, 0));
   }
-  for (int i = 1; i <= NUM_LEDS_OUTER; i++) {
-    Serial.println("Resetting outer LED: " + String(i)); // Debug print
-    outer_LED_strip.setPixelColor(i, outer_LED_strip.Color(255,0,0));
+  for (int i = 0; i <= NUM_LEDS_OUTER; i++) {
+    // Serial.println("Resetting outer LED: " + String(i)); // Debug print
+    outer_LED_strip.setPixelColor(i, outer_LED_strip.Color(0, 0, 0));
   }
   inner_LED_strip.show();
   outer_LED_strip.show();
