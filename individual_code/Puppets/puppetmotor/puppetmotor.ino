@@ -5,16 +5,16 @@
 #define STEPS_PER_REV 200  //This is the maximum
 #define gear_ratio 1.15    //multiplying by this converts from rotation in degrees from the arm, to rotation in steps of the motor.
 #define stepdeg_ratio 4
-#define stepper_enable_pin1 11
-#define stepper_enable_pin2 12
-#define armservo_net_pin 3
-#define armservo1_pin 10  //inner puppet ring
-#define armservo2_pin 9
-#define armservo3_pin 6
-#define armservo4_pin 5  //outer puppet ring
+#define STEPPER_MOTOR_ENA_PIN 11
+#define STEPPER_MOTOR_ENB_PIN 12
+#define SERVO_NET_PIN 3
+#define SERVO_PUPPETS_1_PIN 10  //inner puppet ring
+#define SERVO_PUPPETS_2_PIN 9
+#define SERVO_PUPPETS_3_PIN 6
+#define SERVO_PUPPETS_4_PIN 5  //outer puppet ring
 
 //objects
-Stepper stepper(STEPS_PER_REV, 2, 4, 7, 8);
+Stepper stepper(STEPS_PER_REV, STEPPER_MOTOR_IN1_PIN, STEPPER_MOTOR_IN2_PIN, STEPPER_MOTOR_IN3_PIN, STEPPER_MOTOR_IN4_PIN);
 Servo armservo_net;
 Servo armservo1;
 Servo armservo2;
@@ -28,21 +28,13 @@ int acc_start_angle;  //starting location/angle of the response reveals(accomoda
 void setup() {
   Serial.begin(9600);
   stepper.setSpeed(40);
-  pinMode(stepper_enable_pin1, OUTPUT);
-  pinMode(stepper_enable_pin2, OUTPUT);
-  armservo_net.attach(armservo_net_pin);
-  armservo1.attach(armservo1_pin);
-  armservo2.attach(armservo2_pin);
-  armservo3.attach(armservo3_pin);
-  armservo4.attach(armservo4_pin);
-  // delay(1000);
-  // setArmServo(armservo1,true);
-  // delay(1000);
-  // setArmServo(armservo2,true);
-  // delay(1000);
-  // setArmServo(armservo3,true);
-  // delay(1000);
-  // setArmServo(armservo4,true);
+  pinMode(STEPPER_MOTOR_ENA_PIN, OUTPUT);
+  pinMode(STEPPER_MOTOR_ENB_PIN, OUTPUT);
+  armservo_net.attach(SERVO_NET_PIN);
+  armservo1.attach(SERVO_PUPPETS_1_PIN);
+  armservo2.attach(SERVO_PUPPETS_2_PIN);
+  armservo3.attach(SERVO_PUPPETS_3_PIN);
+  armservo4.attach(SERVO_PUPPETS_4_PIN);
   delay(5000);
   setArmNetServo(false);
   all_up();
@@ -89,7 +81,7 @@ void prepare_response() {
   //shift LED's here
 }
 
-void reset_arm() {//called after resetting puppets
+void reset_arm() {  //called after resetting puppets
   // arm moves to absolute reset location:
   // underneath the static net mast / end of arrest section
   all_down();
@@ -101,19 +93,23 @@ void reset_arm() {//called after resetting puppets
 void move_arm(int degrees) {  //move arm to angle relative to its current position.
   //like stepper.step but keeps track of movement, and converts to degrees.
   int steps = int(degrees * gear_ratio * stepdeg_ratio);
-  digitalWrite(stepper_enable_pin1, HIGH);
-  digitalWrite(stepper_enable_pin2, HIGH);
+  digitalWrite(STEPPER_MOTOR_ENA_PIN, HIGH);
+  digitalWrite(STEPPER_MOTOR_ENB_PIN, HIGH);
   stepper.step(steps);
   delay(300);       //allow for bounce back
   stepper.step(5);  //cancel bounce back
-  digitalWrite(stepper_enable_pin1, LOW);
-  digitalWrite(stepper_enable_pin2, LOW);
+  digitalWrite(STEPPER_MOTOR_ENA_PIN, LOW);
+  digitalWrite(STEPPER_MOTOR_ENB_PIN, LOW);
   stepstaken += steps;
 }
 
 void move_arm_to(int degrees) {  //move arm to angle relative to the starting position, not 100% sure it works. Can only travel to target through the starting position.
   int absolute_steps = int(degrees * gear_ratio * stepdeg_ratio) - stepstaken;
+  digitalWrite(STEPPER_MOTOR_ENA_PIN, HIGH);
+  digitalWrite(STEPPER_MOTOR_ENB_PIN, HIGH);
   stepper.step(absolute_steps);
+  digitalWrite(STEPPER_MOTOR_ENA_PIN, LOW);
+  digitalWrite(STEPPER_MOTOR_ENB_PIN, LOW);
   delay(300);       //allow for bounce back
   stepper.step(5);  //cancel bounce back
   stepstaken += absolute_steps;
@@ -158,7 +154,7 @@ void arrests(int percentage) {
   //go behind puppets
   all_down();
   move_arm(percentage);
-  if(percentage>15){
+  if (percentage > 15) {
     //move both masts seperately
     setArmNetServo(true);
     move_arm(-15);
@@ -167,9 +163,9 @@ void arrests(int percentage) {
     stepper.step(-5);
     //move other mast
     setArmNetServo(true);
-    move_arm(-(percentage-15));
+    move_arm(-(percentage - 15));
     setArmNetServo(false);
-  } else if(percentage>3){
+  } else if (percentage > 3) {
     //move one mast (or both to same place, not sure yet)
     setArmNetServo(true);
     move_arm(-percentage);
@@ -195,15 +191,15 @@ void violence(int percentage) {
   delay(3000);
 }
 
-void reset_puppets() {//function is called when arm is at end
+void reset_puppets() {  //function is called when arm is at end
   all_down();
-  move_arm_to(0); // go to start
+  move_arm_to(0);  // go to start
   all_up();
   setArmNetServo(true);
-  move_arm_to(100-get_percentage(5)); //end of arrests section, where the nets should go
+  move_arm_to(100 - get_percentage(5));  //end of arrests section, where the nets should go
   setArmNetServo(false);
-  move_arm_to(100); // reset remaining puppets
-  reset_arm(); //move down servo's and put arm back in starting position.
+  move_arm_to(100);  // reset remaining puppets
+  reset_arm();       //move down servo's and put arm back in starting position.
 }
 
 int get_percentage(int response) {
