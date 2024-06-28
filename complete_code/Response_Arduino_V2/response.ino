@@ -1,5 +1,5 @@
 void confermation_voiceover_sound() {
-  int number_of_audios = 1;  //set to 4
+  int number_of_audios = 4;  //set to 4
   if (current_audio_index < number_of_audios) {
     if (!is_audio_player_running) {
       play_selection_voiceover();

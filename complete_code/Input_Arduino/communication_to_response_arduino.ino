@@ -39,9 +39,9 @@ bool is_any_selection_different_and_valid() {  //if any selection is different f
 
 
 bool are_all_hands_placed() {
-  int LDR_threshold1 = 600;  // different LDRS have different threshold for when it is dark, real values need to be checked when LDRs are installed
-  int LDR_threshold2 = 670;
-  int LDR_threshold3 = 700;
+  int LDR_threshold1 = 300;  // different LDRS have different threshold for when it is dark, real values need to be checked when LDRs are installed
+  int LDR_threshold2 = 300;
+  int LDR_threshold3 = 300;
 
   //value parameters and reading of value
   int LDR_value1, LDR_value2, LDR_value3;
