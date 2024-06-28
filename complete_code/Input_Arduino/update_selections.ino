@@ -123,11 +123,11 @@ int read_the_RFID() {
 
     // Check if the UID matches a known protest code
     if (content.substring(1) == "73 F3 0B 1A") {         // First UID
-      billboard_protest_code = 1;                        // Set protest code to 1
+      billboard_protest_code = 3;                        // Set protest code to 1
     } else if (content.substring(1) == "03 B7 86 15") {  // Second UID
       billboard_protest_code = 2;                        // Set protest code to 2
     } else if (content.substring(1) == "D3 6F 65 95") {  // Third UID
-      billboard_protest_code = 3;                        // Set protest code to 3
+      billboard_protest_code = 1;                        // Set protest code to 3
     } else {
       billboard_protest_code = 0;  // Unknown UID, set protest code to 0
     }
