@@ -164,6 +164,8 @@ void response() {
     // Serial.println("case 6");
     violence_response();
   } else {
+    response_switch_index++;
+    // Serial.println(response_switch_index);
     Serial.println("fucker, let me be, i'm in standby!");
   }
 }

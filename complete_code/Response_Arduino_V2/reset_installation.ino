@@ -3,6 +3,7 @@ void reset_installation() {
   reset_LED();
   current_audio_index = 0;
   has_run_once_every_response = false;
+  percentage_revealed= 0;
 
   flag_servo.write(0);
 
